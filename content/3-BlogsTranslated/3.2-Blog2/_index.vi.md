@@ -1,127 +1,82 @@
 ---
-title: "Blog 2"
-date: 2024-01-01
-weight: 1
+title: "CloudFormation Express mode"
+date: 2026-06-30
+weight: 2
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# AWS CloudFormation Express mode
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+#### 1. Thông tin nguồn
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+| Hạng mục | Nội dung |
+|---|---|
+| Tiêu đề gốc | Accelerate your infrastructure deployments by up to 4x with AWS CloudFormation Express mode |
+| Nguồn | [AWS News Blog](https://aws.amazon.com/blogs/aws/accelerate-your-infrastructure-deployments-by-up-to-4x-with-aws-cloudformation-express-mode/) |
+| Chủ đề | AWS CloudFormation, triển khai hạ tầng, tối ưu vòng lặp phát triển |
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
+![Hình minh họa từ bài viết gốc](/images/3-BlogsTranslated/3.2-Blog2/hero.jpg)
 
----
+#### 2. Tóm tắt nội dung
 
-## Hướng dẫn kiến trúc
+Bài viết giới thiệu **AWS CloudFormation Express mode**, chế độ triển khai mới nhằm tăng tốc deployment cho developer và công cụ AI khi lặp lại trên hạ tầng. Express mode hoàn tất khi CloudFormation xác nhận **cấu hình tài nguyên đã được áp dụng**, thay vì chờ các **stabilization checks** kéo dài. Theo bài viết, thời gian triển khai có thể giảm tới **bốn lần** đối với workflow phát triển lặp và các kịch bản production phù hợp.
 
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
+#### 3. Nội dung chính
 
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
+**3.1. Nguyên lý hoạt động**
 
-**Kiến trúc giải pháp bây giờ như sau:**
+Ở chế độ mặc định, mọi deployment CloudFormation đều thực hiện stabilization checks sau khi áp dụng cấu hình, nhằm bảo đảm tài nguyên sẵn sàng phục vụ traffic trước khi chuyển tải.
 
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+Express mode phục vụ **hai nhóm use case chính**: (1) vòng lặp phát triển lặp; (2) kịch bản production khi chấp nhận ổn định theo kiểu eventual. Các tình huống cụ thể gồm: chỉnh cấu hình hạ tầng trong quá trình phát triển, kiểm thử từng thành phần ứng dụng, và phát triển hạ tầng hỗ trợ AI cần phản hồi dưới một phút.
 
----
+Với Express mode:
 
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
+- Deployment hoàn tất khi cấu hình đã được apply, không chờ stabilization checks.
+- Tài nguyên tiếp tục trở nên operational ở nền.
+- CloudFormation **tự động retry** các tài nguyên phụ thuộc gặp lỗi tạm thời trong cùng stack, không cần can thiệp thủ công.
+- Điểm thay đổi là **thời điểm hoàn tất**, không phải cách provision tài nguyên.
 
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
+Ví dụ đo trong bài viết:
 
----
+| Thao tác | Standard mode | Express mode |
+|---|---|---|
+| Tạo Amazon SQS kèm dead letter queue (DLQ) | khoảng 64 giây | tới khoảng 10 giây |
+| Xóa AWS Lambda có network interface attachment | khoảng 20–30 phút | tới khoảng 10 giây |
 
-## Lựa chọn công nghệ và phạm vi giao tiếp
+**3.2. Cách kích hoạt**
 
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+Trên AWS Management Console, khi tạo stack, chọn **Enable** trong **Express mode** thuộc **Stack deployment options**.
 
----
+Express mode cũng dùng được qua **AWS CLI**, **AWS SDKs**, **AWS CDK**, và các công cụ AI (bài viết nêu ví dụ **Kiro**).
 
-## The pub/sub hub
+Kích hoạt bằng tham số `--deployment-config` với mode `EXPRESS` khi **create**, **update** hoặc **delete** stack. **Không cần sửa template**. Express mode **tắt rollback mặc định** để ưu tiên tốc độ lặp; muốn bật lại rollback thì đặt `disableRollback` thành `false` trong `deployment-config`, hoặc thiết lập cơ chế giám sát/dọn dẹp khi triển khai thất bại.
 
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
+![Bật Express mode trên CloudFormation console](/images/3-BlogsTranslated/3.2-Blog2/figure-1.jpg)
 
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
+Ví dụ lệnh tạo stack:
 
----
+```bash
+aws cloudformation create-stack \
+   --stack-name my-app \
+   --template-body file://template.yaml \
+   --deployment-config '{"mode": "EXPRESS", "disableRollback": true}'
+```
 
-## Core microservice
+Bài viết cũng minh họa xây dựng hạ tầng tăng dần (IAM role → Lambda → SQS và event source mapping), đồng thời nhấn mạnh template IAM cần tuân thủ nguyên tắc **least privilege**.
 
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
+Với AWS CDK, dùng lệnh `cdk deploy --express`: lệnh này lấy template CloudFormation được sinh ra và triển khai qua Express mode.
 
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
+Express mode hoạt động với **mọi template CloudFormation hiện có** và hỗ trợ các tính năng như **change sets** và **nested stacks**. Khi bật Express mode trên **parent stack**, **tất cả nested stacks cũng dùng Express mode**. Nếu cần tài nguyên fully operational trước khi chuyển traffic hoặc kiểm thử, nên tiếp tục dùng chế độ mặc định có stabilization checks.
 
----
+**3.3. Phạm vi áp dụng**
 
-## Front door microservice
+Tính năng có mặt tại **tất cả Region thương mại** của AWS và **không phát sinh chi phí bổ sung**. Bài viết cũng đề cập có thể tra cứu khả dụng theo Region và tài liệu liên quan qua AWS Capabilities by Region, CloudFormation documentation và AWS MCP Server.
 
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
+#### 4. Nhận xét
 
----
+Bài viết nêu rõ sự đánh đổi cốt lõi trong triển khai hạ tầng bằng CloudFormation: chờ stabilization checks giúp bảo đảm tài nguyên sẵn sàng phục vụ, nhưng làm chậm vòng lặp phát triển. Express mode tách biệt thời điểm “cấu hình đã được áp dụng” khỏi thời điểm “tài nguyên đã ổn định hoàn toàn”, nhờ đó rút ngắn phản hồi cho developer và công cụ AI khi chỉnh sửa hạ tầng liên tục.
 
-## Staging ER7 microservice
+Các ví dụ đo thời gian trong bài viết (SQS kèm DLQ, xóa Lambda có network interface) cho thấy lợi ích rõ nhất ở các thao tác vốn bị stabilization kéo dài. Đồng thời, việc tắt rollback mặc định đòi hỏi người dùng chủ động thiết kế cơ chế giám sát và xử lý lỗi nếu áp dụng cho môi trường quan trọng. Việc parent stack bật Express mode sẽ lan sang toàn bộ nested stacks cũng là điểm cần lưu ý khi tổ chức hạ tầng theo nhiều lớp stack.
 
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
-
----
-
-## Tính năng mới trong giải pháp
-
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Trong thực tế, Express mode phù hợp giai đoạn phát triển, kiểm thử thành phần và các thay đổi production chấp nhận eventual stabilization. Ngược lại, với thay đổi liên quan chuyển traffic, phát hành dịch vụ hoặc tài nguyên phụ thuộc chặt vào trạng thái sẵn sàng, chế độ mặc định vẫn là lựa chọn thận trọng hơn. Bài viết vì vậy không chỉ giới thiệu tính năng mới mà còn định hướng cách chọn chế độ triển khai theo mức rủi ro của từng thay đổi.

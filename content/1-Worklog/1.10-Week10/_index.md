@@ -1,57 +1,35 @@
 ---
 title: "Week 10 Worklog"
-date: 2024-01-01
-weight: 2
+date: 2026-06-22
+weight: 10
 chapter: false
 pre: " <b> 1.10. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 10 objectives:
 
-### Week 10 Objectives:
+* Review Week 9 topics: application modernization, microservices, serverless, and an introduction to container services.
+* Learn Docker, Amazon ECR, and AWS container runtimes: ECS, Fargate, and Kubernetes/EKS.
+* Practice packaging and deploying containerized applications, then clean up lab resources.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **June 22–28, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 9 content on application modernization, microservices, serverless, and an introduction to container services. <br> **Docker and containers overview:** <br>&emsp; + Understand Container, Image, Dockerfile, Docker Engine, and Container Registry. <br>&emsp; + Distinguish virtual machines from containers and understand consistent packaging and deployment benefits. | June 22, 2026 | June 22, 2026 | <https://cloudjourney.awsstudygroup.com/5-container/><br><https://000015.awsstudygroup.com/> |
+| 3 | **Basic Docker practice:** <br>&emsp; + Write a Dockerfile for a sample application, build a Docker image, and run containers locally. <br>&emsp; + Use basic Docker commands to inspect containers, images, logs, port mappings, and clean up resources. | June 23, 2026 | June 24, 2026 | <https://000015.awsstudygroup.com/> |
+| 4 | **Amazon Elastic Container Registry (Amazon ECR):** <br>&emsp; + Create a private repository, authenticate to ECR with the AWS CLI, and push a Docker image. <br>&emsp; + Verify image tags, versions, and repository access permissions before deployment. | June 24, 2026 | June 25, 2026 | <https://000067.awsstudygroup.com/> |
+| 5 | **Amazon ECS, AWS Fargate, and Amazon EKS:** <br>&emsp; + Understand ECS clusters, task definitions, services, Fargate, and running containers without managing servers. <br>&emsp; + Learn Kubernetes/EKS architecture: cluster, node, pod, deployment, service, namespace, and kubectl. | June 25, 2026 | June 26, 2026 | <https://000067.awsstudygroup.com/><br><https://000126.awsstudygroup.com/> |
+| 6 | **Container application deployment practice:** <br>&emsp; + Deploy a sample application with Deployment and Service, verify pods, replicas, and self-healing behavior. <br>&emsp; + Monitor resource status with kubectl and CloudWatch at a basic level. <br> **Post-lab cleanup:** <br>&emsp; + Delete deployments, services, pods, unused Docker images, and review the Amazon ECR repository. <br>&emsp; + Review ECS/EKS/Fargate-related resources to limit unexpected charges. | June 26, 2026 | June 28, 2026 | <https://000126.awsstudygroup.com/><br><https://000067.awsstudygroup.com/> |
 
-### Week 10 Achievements:
+### Week 10 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understand the difference between containers and virtual machines, and the build, run, push, and pull workflow for Docker images.
 
-* Successfully created and configured an AWS Free Tier account.
+* Know how to use Docker to package applications and store images in Amazon ECR.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* Have foundational knowledge of ECS, Fargate, Kubernetes, and Amazon EKS for container application deployment.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Can deploy a sample containerized application, check resource status, and clean up after hands-on practice.

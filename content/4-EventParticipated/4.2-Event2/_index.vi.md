@@ -1,125 +1,249 @@
 ---
 title: "Event 2"
-date: 2024-01-01
-weight: 1
+date: 2026-05-23
+weight: 2
 chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Bài thu hoạch "FCAJ Community Day" (lần 2)
 
-# Bài thu hoạch “GenAI-powered App-DB Modernization workshop”
+### Thông tin sự kiện
 
-### Mục Đích Của Sự Kiện
+| Hạng mục | Nội dung |
+| --- | --- |
+| Tên sự kiện | FCAJ Community Day (lần 2) |
+| Thời gian | 09:00, ngày 23/05/2026 |
+| Địa điểm | Tầng 26 & 36, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh |
+| Vai trò | Người tham dự |
+| Số phiên chia sẻ | 6 phiên kỹ thuật + phần khai mạc |
 
-- Chia sẻ best practices trong thiết kế ứng dụng hiện đại
-- Giới thiệu phương pháp DDD và event-driven architecture
-- Hướng dẫn lựa chọn compute services phù hợp
-- Giới thiệu công cụ AI hỗ trợ development lifecycle
+### Mục đích của sự kiện
 
-### Danh Sách Diễn Giả
+FCAJ Community Day (lần 2) tiếp tục định hướng kết nối cộng đồng First Cloud Journey, tập trung vào chủ đề **AI, Cloud và kinh nghiệm thực chiến** từ các diễn giả đang làm việc trong ngành. Theo đánh giá của em sau khi tham dự, sự kiện hướng đến các mục tiêu sau:
 
-- **Jignesh Shah** - Director, Open Source Databases
-- **Erica Liu** - Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** - Assc. Specialist SA, Serverless Amazon Web Services
+1. **Cập nhật xu hướng AI và Cloud:** Giúp sinh viên nắm bắt tác động của AI đến thị trường lao động và nhu cầu phát triển phần mềm.
+2. **Chia sẻ kỹ năng thực hành:** Truyền đạt kinh nghiệm sử dụng AI đúng cách — từ context engineering, kiến trúc AWS đến triển khai hệ thống doanh nghiệp.
+3. **Học hỏi từ dự án thực tế:** Các diễn giả demo sản phẩm, kiến trúc và bài học từ hackathon, dự án nội bộ ngân hàng.
+4. **Khuyến khích tham gia cộng đồng:** Tạo không gian networking, đặt câu hỏi và chia sẻ kiến thức giữa các thành viên FCAJ.
 
-### Nội Dung Nổi Bật
+### Danh sách diễn giả
 
-#### Đưa ra các ảnh hưởng tiêu cực của kiến trúc ứng dụng cũ
+| STT | Diễn giả | Vai trò / Đơn vị |
+| --- | --- | --- |
+| 1 | Nguyễn Gia Hưng | Solutions Architect AWS Vietnam, Người sáng lập FCAJ |
+| 2 | Anh Tịnh (Trương) | Platform Engineer, GothamX |
+| 3 | Hải Anh | Pacific Vietnam |
+| 4 | Nguyễn Tuấn Thịnh | DevOps Cloud Engineer |
+| 5 | Nhóm UTM Morpho (Uyển, Thảo, Mai) | Đội thi LA Hackathon |
+| 6 | Đức Đào | Engineer (chia sẻ về LLM inference) |
+| 7 | Cát Vy | Chuyên gia AI/Enterprise (VPBank) |
 
-- Thời gian release sản phẩm lâu → Mất doanh thu/bỏ lỡ cơ hội
-- Hoạt động kém hiệu quả → Mất năng suất, tốn kém chi phí
-- Không tuân thủ các quy định về bảo mật → Mất an ninh, uy tín
+### Nội dung các phiên chia sẻ
 
-#### Chuyển đổi sang kiến trúc ứng dụng mới - Microservice Architecture
+#### Phần khai mạc — Xu hướng AI và thị trường lao động (Nguyễn Gia Hưng)
 
-Chuyển đổi thành hệ thống modular – từng chức năng là một **dịch vụ độc lập** giao tiếp với nhau qua **sự kiện** với 3 trụ cột cốt lõi:
+Diễn giả mở đầu với góc nhìn về **nghịch lý AI trong thị trường việc làm:** khi chi phí phát triển phần mềm giảm nhờ AI, nhu cầu và số lượng phần mềm lại tăng mạnh — tương tự hiệu ứng đèn LED tiết kiệm điện nhưng tổng tiêu thụ điện tăng vì con người chiếu sáng nhiều hơn.
 
-- **Queue Management**: Xử lý tác vụ bất đồng bộ
-- **Caching Strategy:** Tối ưu performance
-- **Message Handling:** Giao tiếp linh hoạt giữa services
+**Nội dung chính:**
 
-#### Domain-Driven Design (DDD)
+- AI làm phát triển phần mềm rẻ hơn, hiệu quả hơn → số lượng sản phẩm phần mềm sẽ tăng khủng khiếp trong tương lai.
+- Quán quân và hạng ba Anthropic Hackathon là người non-IT (luật sư, bác sĩ) — chứng minh rào cản kỹ thuật đang giảm.
+- Xu hướng nghề mới: **vibe software engineering** — vai trò sửa, maintain và hoàn thiện sản phẩm do người có ý tưởng (không chuyên IT) tạo ra bằng AI.
+- Khuyến khích sinh viên không nản trước thị trường việc làm mà tập trung xây dựng năng lực giải quyết vấn đề thực tế.
 
-- **Phương pháp 4 bước**: Xác định domain events → sắp xếp timeline → identify actors → xác định bounded contexts
-- **Case study bookstore**: Minh họa cách áp dụng DDD thực tế
-- **Context mapping**: 7 patterns tích hợp bounded contexts
+#### Phiên 1 — Context Engineering: Bí quyết để AI trả lời đúng (Anh Tịnh)
 
-#### Event-Driven Architecture
+Platform Engineer tại GothamX chia sẻ về **cách cung cấp ngữ cảnh (context) đúng** để AI thực sự hữu ích trong công việc.
 
-- **3 patterns tích hợp**: Publish/Subscribe, Point-to-point, Streaming
-- **Lợi ích**: Loose coupling, scalability, resilience
-- **So sánh sync vs async**: Hiểu rõ trade-offs (sự đánh đổi)
+**Vấn đề thường gặp:**
 
-#### Compute Evolution
+- Nhiều người dùng chung một chat cho mọi chủ đề (du lịch, CV, code…) → AI đổi context liên tục, kết quả sai lệch.
+- Prompt quá dài với thông tin có thể tìm được trên internet (ví dụ: "bạn là senior architect 10 năm kinh nghiệm") → lãng phí token, AI không hiểu điểm quan trọng.
 
-- **Shared Responsibility Model**: Từ EC2 → ECS → Fargate → Lambda
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value
-- **Functions vs Containers**: Criteria lựa chọn phù hợp
+**Giải pháp đề xuất:**
 
-#### Amazon Q Developer
+1. **Cung cấp context riêng biệt:** Chia sẻ kiến thức chỉ có trong tổ chức — blueprint nội bộ, quy trình ngân hàng, convention của team — thay vì thông tin AI đã biết.
+2. **Tách phiên làm việc (working session):** Mỗi task một session riêng; kết thúc session thì tóm tắt context mang sang session mới.
+3. **Tự tin chia sẻ và đặt câu hỏi:** Kỹ năng giao tiếp quan trọng không kém kỹ năng kỹ thuật trong môi trường làm việc hiện đại.
+4. **Ưu tiên developer biết dùng AI:** Trong tuyển dụng, người tuyển dụng sẽ ưu tiên developer sử dụng AI tool hiệu quả và tiết kiệm token.
 
-- **SDLC automation**: Từ planning đến maintenance
-- **Code transformation**: Java upgrade, .NET modernization
-- **AWS Transform agents**: VMware, Mainframe, .NET migration
+#### Phiên 2 — Amazon Q và AI Agent cho doanh nghiệp (Hải Anh)
 
-### Những Gì Học Được
+Diễn giả từ Pacific Vietnam trình bày về **Amazon Q** — trợ lý AI do AWS phát triển, hướng đến người dùng doanh nghiệp.
 
-#### Tư Duy Thiết Kế
+**Nhu cầu giải quyết:**
 
-- **Business-first approach**: Luôn bắt đầu từ business domain, không phải technology
-- **Ubiquitous language**: Importance của common vocabulary giữa business và tech teams
-- **Bounded contexts**: Cách identify và manage complexity trong large systems
+- Manager, senior và giám đốc mất nhiều thời gian tập hợp dữ liệu, file để làm báo cáo hàng tuần.
+- Cần hệ sinh thái tích hợp (tương tự Microsoft 365, Google Workspace) qua một platform để user tự build agent phục vụ mục đích riêng.
 
-#### Kiến Trúc Kỹ Thuật
+**Tính năng nổi bật:**
 
-- **Event storming technique**: Phương pháp thực tế để mô hình hóa quy trình kinh doanh
-- Sử dụng **Event-driven communication** thay vì synchronous calls
-- **Integration patterns**: Hiểu khi nào dùng sync, async, pub/sub, streaming
-- **Compute spectrum**: Criteria chọn từ VM → containers → serverless
+| Tính năng | Mô tả |
+| --- | --- |
+| BI Dashboard | Phân tích chuyên sâu từ dữ liệu đầu vào |
+| Insights Chat | Chat trực tiếp với agent qua thông tin đã tích hợp |
+| Automation Flow | Tự động hóa quy trình (transcribe meeting → gửi email follow-up) |
+| MCP Integration | Kết nối custom tool qua Model Context Protocol |
 
-#### Chiến Lược Hiện Đại Hóa
+**Khái niệm Agent:** LLM (bộ não) kết hợp với các function/action có thể thực thi — khác với chatbot chỉ trả lời text. Demo bao gồm transcribe cuộc họp, phân tích file Excel thành dashboard và tích hợp MCP trên AWS.
 
-- **Phased approach**: Không rush, phải có roadmap rõ ràng
-- **7Rs framework**: Nhiều con đường khác nhau tùy thuộc vào đặc điểm của mỗi ứng dụng
-- **ROI measurement**: Cost reduction + business agility
+#### Phiên 3 — CloudFront Flat-Rate Pricing (Nguyễn Tuấn Thịnh)
 
-### Ứng Dụng Vào Công Việc
+DevOps Engineer chia sẻ về **ý tưởng mô hình/gói CDN flat-rate** trong bối cảnh các dịch vụ liên quan đến CloudFront. Vì đây là nội dung ghi nhận từ sự kiện và chưa thấy là mô hình giá AWS công khai chính thức, phần này được trình bày như takeaway của phiên chia sẻ, không phải thông báo sản phẩm chính thức của CloudFront.
 
-- **Áp dụng DDD** cho project hiện tại: Event storming sessions với business team
-- **Refactor microservices**: Sử dụng bounded contexts để identify service boundaries
-- **Implement event-driven patterns**: Thay thế một số sync calls bằng async messaging
-- **Serverless adoption**: Pilot AWS Lambda cho một số use cases phù hợp
-- **Try Amazon Q Developer**: Integrate vào development workflow để boost productivity
+**Vấn đề với pay-as-you-go truyền thống:**
 
-### Trải nghiệm trong event
+- Chi phí CDN phụ thuộc traffic → khó estimate bill cuối tháng.
+- Rủi ro DDoS hoặc traffic spike bất thường có thể dẫn đến bill hàng chục nghìn USD.
+- Doanh nghiệp e ngại triển khai CDN vì chi phí không dự đoán được.
 
-Tham gia workshop **“GenAI-powered App-DB Modernization”** là một trải nghiệm rất bổ ích, giúp tôi có cái nhìn toàn diện về cách hiện đại hóa ứng dụng và cơ sở dữ liệu bằng các phương pháp và công cụ hiện đại. Một số trải nghiệm nổi bật:
+**Ý tưởng gói flat-rate được thảo luận trong phiên:**
 
-#### Học hỏi từ các diễn giả có chuyên môn cao
-- Các diễn giả đến từ AWS và các tổ chức công nghệ lớn đã chia sẻ **best practices** trong thiết kế ứng dụng hiện đại.
-- Qua các case study thực tế, tôi hiểu rõ hơn cách áp dụng **Domain-Driven Design (DDD)** và **Event-Driven Architecture** vào các project lớn.
+| Gói | Giá | Đặc điểm |
+| --- | --- | --- |
+| Free | $0 | Website nhỏ, bảo vệ cơ bản |
+| Pro | $15/tháng | Startup, SMB |
+| Business | $200/tháng | Doanh nghiệp, VPC Private Origin, WAF |
+| Premium | $1,000/tháng | Enterprise, Origin Failover, latency thấp |
 
-#### Trải nghiệm kỹ thuật thực tế
-- Tham gia các phiên trình bày về **event storming** giúp tôi hình dung cách **mô hình hóa quy trình kinh doanh** thành các domain events.
-- Học cách **phân tách microservices** và xác định **bounded contexts** để quản lý sự phức tạp của hệ thống lớn.
-- Hiểu rõ trade-offs giữa **synchronous và asynchronous communication** cũng như các pattern tích hợp như **pub/sub, point-to-point, streaming**.
+- Mô hình chi phí cố định hàng tháng nhằm giảm độ khó dự báo billing.
+- Có thể đóng gói CDN, bảo vệ ứng dụng, DNS và credit lưu trữ tùy thiết kế của nhà cung cấp.
+- Mỗi domain cần một gói riêng; có thể nâng cấp gói khi nhu cầu tăng.
 
-#### Ứng dụng công cụ hiện đại
-- Trực tiếp tìm hiểu về **Amazon Q Developer**, công cụ AI hỗ trợ SDLC từ lập kế hoạch đến maintenance.
-- Học cách **tự động hóa code transformation** và pilot serverless với **AWS Lambda**, từ đó nâng cao năng suất phát triển.
+#### Phiên 4 — Hành trình 36 giờ tại LA Hackathon: Dự án UTM Morpho (Uyển, Thảo, Mai)
 
-#### Kết nối và trao đổi
-- Workshop tạo cơ hội trao đổi trực tiếp với các chuyên gia, đồng nghiệp và team business, giúp **nâng cao ngôn ngữ chung (ubiquitous language)** giữa business và tech.
-- Qua các ví dụ thực tế, tôi nhận ra tầm quan trọng của **business-first approach**, luôn bắt đầu từ nhu cầu kinh doanh thay vì chỉ tập trung vào công nghệ.
+Nhóm 3 thành viên (Uyển, Thảo, Mai) chia sẻ kinh nghiệm thi **LA Hackathon** — cuộc thi lớn nhất tại Việt Nam với thời hạn 36 giờ liên tục build sản phẩm.
 
-#### Bài học rút ra
-- Việc áp dụng DDD và event-driven patterns giúp giảm **coupling**, tăng **scalability** và **resilience** cho hệ thống.
-- Chiến lược hiện đại hóa cần **phased approach** và đo lường **ROI**, không nên vội vàng chuyển đổi toàn bộ hệ thống.
-- Các công cụ AI như Amazon Q Developer có thể **boost productivity** nếu được tích hợp vào workflow phát triển hiện tại.
+**Ý tưởng sản phẩm — UTM Morpho:**
 
-#### Một số hình ảnh khi tham gia sự kiện
-* Thêm các hình ảnh của các bạn tại đây
-> Tổng thể, sự kiện không chỉ cung cấp kiến thức kỹ thuật mà còn giúp tôi thay đổi cách tư duy về thiết kế ứng dụng, hiện đại hóa hệ thống và phối hợp hiệu quả hơn giữa các team.
+- Vấn đề: Khi dùng AI generate UI, mỗi lần chỉnh sửa nhỏ (màu button, spacing) phải prompt lại từ đầu → tốn thời gian và token.
+- Giải pháp: Editor cho phép generate UI theo template và **chỉnh sửa trực tiếp trên giao diện** (kéo thả component, sửa CSS).
+
+**Kiến trúc AI (3 agents):**
+
+| Agent | Vai trò |
+| --- | --- |
+| A1 — Vision | Phân tích hình ảnh input, tạo file JSON layer |
+| A2 — Engineering | Đọc JSON, tạo size, CSS, layout |
+| A3 — Design | Áp dụng design system, sinh code HTML giao diện |
+
+**Bài học từ hackathon:**
+
+1. Lấy cảm hứng từ công việc hàng ngày thay vì cố gắng giải bài toán vĩ mô.
+2. Tập trung vào feature cốt lõi khi thời gian hạn chế (8–9 giờ cuối cho MVP).
+3. Chiến thuật pitch: demo trước, giải thích architecture sau trong 5 phút.
+4. Quản lý sức khỏe trong 36 giờ: chia thời gian ăn, nghỉ, tránh overthinking và AI over-generation.
+
+#### Phiên 5 — LLM Inference: Temperature và tính nhất quán đầu ra (Đức Đào)
+
+Phiên kỹ thuật về **bản chất probabilistic của LLM** và cách tối ưu độ ổn định output trong production.
+
+**Kiến thức cốt lõi:**
+
+- LLM chọn token tiếp theo dựa trên điểm số (logit) — mang tính xác suất, không deterministic.
+- Parameter **temperature** điều khiển độ ngẫu nhiên: temperature = 0 vẫn không đảm bảo output giống nhau 100% giữa các lần chạy (do inference optimization trên GPU).
+- Temperature = 0 có thể gây lặp từ — nên đặt 0.1 cho một số model.
+
+**Chiến lược giảm thiểu sự không nhất quán:**
+
+| Chiến lược | Mô tả | Trade-off |
+| --- | --- | --- |
+| Chạy nhiều lần + voting | Nhiều sub-agent, chọn câu trả lời phổ biến nhất | Tăng cost và latency |
+| Self-host model | Kiểm soát hoàn toàn inference config | Tăng chi phí hạ tầng |
+| JSON mode | Bật structured output (OpenAI JSON mode) | Giảm format error |
+| Thiết kế downstream resilient | Service nhận output phải handle nhiều format | Cần test kỹ |
+
+**Key takeaway:** LLM là probabilistic model — luôn thiết kế hệ thống để handle sự biến thiên; test nhiều trường hợp trước khi đưa lên production.
+
+#### Phiên 6 — Enterprise Multi-Agent System cho đánh giá tín dụng (Cát Vy)
+
+Phiên cuối chuyển từ kỹ thuật sang **tư duy nghiệp vụ (business mindset)** — kinh nghiệm triển khai AI tại VPBank.
+
+**Bốn câu hỏi khi thiết kế giải pháp doanh nghiệp:**
+
+1. **Ai xài?** — Xác định người dùng cuối.
+2. **Xài cái gì?** — Chức năng cụ thể cần giải quyết.
+3. **Tại sao phải xài?** — Giá trị mang lại so với cách làm hiện tại.
+4. **Khi nào xài?** — Thời điểm triển khai phù hợp.
+
+**Use case: Đánh giá tín dụng cho startup**
+
+- Startup chiếm trọng số lớn trong hoạt động kinh doanh ngân hàng nhưng model tín dụng truyền thống ít tập trung vào startup.
+- Xây dựng **multi-agent system** enterprise-grade cho quy trình đánh giá tín dụng.
+
+**Sáu trụ cột hệ thống doanh nghiệp:**
+
+| Trụ cột | Nội dung |
+| --- | --- |
+| Knowledge Transfer | Chuyển giao tri thức từ chuyên gia nghiệp vụ vào model — không chỉ đẩy data |
+| Context Engineering | Indexing tài liệu nghiệp vụ, codebase; cần expert xác nhận đúng/sai |
+| Guardrails & Compliance | Prompt injection defense, audit trail, data validation |
+| Security Perimeter | VPC, Security Group, PrivateLink, network isolation |
+| Reliability | Single point of failure, processing, high availability |
+| Deployment Phases | Internal Testing → SIT → UAT → Pilot → Scale |
+
+**Thông điệp quan trọng:** Doanh nghiệp đánh giá **mindset** nhiều hơn độ sâu dự án cá nhân khi phỏng vấn. Kiến thức kỹ thuật phần mềm (JWT, OAuth, software engineering) vẫn bắt buộc để đưa AI từ phòng lab lên production.
+
+### Những gì em học được
+
+**1. Xu hướng ngành và định hướng nghề nghiệp**
+
+- AI không loại bỏ việc làm IT mà thay đổi cấu trúc — tạo ra nghề mới (maintain, fix sản phẩm AI-generated).
+- Developer biết dùng AI hiệu quả sẽ được ưu tiên trong tuyển dụng.
+- Mindset nghiệp vụ (ai xài, xài gì, tại sao, khi nào) quan trọng không kém kiến thức kỹ thuật.
+
+**2. Kỹ năng làm việc với AI**
+
+- Context engineering: cung cấp ngữ cảnh riêng của tổ chức, tách session theo task.
+- LLM là probabilistic — không assume temperature = 0 cho output cố định; thiết kế hệ thống resilient.
+- Knowledge transfer từ chuyên gia nghiệp vụ là yếu tố then chốt trong AI doanh nghiệp.
+
+**3. Kiến thức AWS**
+
+- Mô hình CDN flat-rate có thể giúp kiểm soát rủi ro chi phí cho startup và SMB, nhưng khi áp dụng CloudFront cần kiểm tra lại bảng giá chính thức.
+- Amazon Q hỗ trợ xây dựng AI agent tích hợp MCP cho automation doanh nghiệp.
+- Kiến trúc serverless với multi-agent (vision → engineering → design) có thể triển khai cho sản phẩm AI.
+
+**4. Kinh nghiệm từ hackathon và dự án thực tế**
+
+- Lấy ý tưởng từ pain point hàng ngày hiệu quả hơn giải bài toán lý thuyết.
+- Tập trung MVP khi thời gian hạn chế; demo trước khi giải thích architecture.
+- Triển khai AI enterprise cần quy trình: Internal Test → SIT → UAT → Pilot → Scale.
+
+### Ứng dụng vào công việc thực tập
+
+| STT | Hướng ứng dụng | Cách thực hiện |
+| --- | --- | --- |
+| 1 | Context engineering | Tách session AI theo task; cung cấp context dự án thay vì prompt chung chung |
+| 2 | CloudFront | Cân nhắc phương án kiểm soát chi phí và kiểm tra bảng giá CloudFront chính thức trước khi triển khai CDN cho dự án workshop |
+| 3 | Kiến trúc multi-agent | Tham khảo mô hình 3 agents (vision → engineering → design) cho bài lab AI |
+| 4 | LLM production | Thiết kế downstream service handle output biến thiên; test nhiều trường hợp |
+| 5 | Tư duy doanh nghiệp | Áp dụng 4 câu hỏi (ai xài, xài gì, tại sao, khi nào) khi thiết kế giải pháp |
+| 6 | Tham gia hackathon | Chủ động đăng ký cuộc thi để tích lũy kinh nghiệm build sản phẩm trong thời gian ngắn |
+
+### Trải nghiệm tham dự sự kiện
+
+Em tham dự FCAJ Community Day lần 2 tại Bitexco với số lượng tham dự đông đảo — cả tầng 26 và tầng 36. So với Community Day đầu tiên (09/05/2026), sự kiện lần này đi sâu hơn vào **kỹ thuật AI production** và **kinh nghiệm doanh nghiệp**.
+
+**Không khí và kết nối cộng đồng**
+
+Không khí cởi mở, khuyến khích đặt câu hỏi và trao đổi — phù hợp tinh thần learning community của FCAJ.
+
+**Ấn tượng theo từng phiên**
+
+- **Phần khai mạc (Nguyễn Gia Hưng):** Góc nhìn lạc quan về thị trường việc làm — AI tạo thêm việc làm dài hạn thay vì thay thế hoàn toàn.
+- **Phiên Anh Tịnh:** Thực tế và dễ áp dụng — cách tách context và session khi làm việc với AI hàng ngày.
+- **Phiên Hải Anh:** Demo Amazon Q trực tiếp, thấy rõ tiềm năng AI agent trong môi trường doanh nghiệp.
+- **Phiên Nguyễn Tuấn Thịnh:** Ý tưởng về pricing và kiểm soát chi phí CDN — hữu ích cho việc estimate chi phí dự án.
+- **Phiên UTM Morpho (Uyển, Thảo, Mai):** Câu chuyện hackathon truyền cảm hứng — chứng minh có thể build sản phẩm hoàn chỉnh trong 36 giờ.
+- **Phiên Đức Đào:** Hiểu sâu hơn về bản chất probabilistic của LLM và cách thiết kế hệ thống production-ready.
+- **Phiên Cát Vy:** Chuyển góc nhìn từ technical sang business — hiểu rõ hơn kỳ vọng doanh nghiệp khi triển khai AI.
+
+**Bài học rút ra**
+
+Sự kiện giúp em nhận thức rằng hành trình Cloud/AI Engineer không chỉ là học dịch vụ AWS mà còn cần: kỹ năng context engineering, tư duy thiết kế hệ thống production-ready, và đặc biệt là **mindset nghiệp vụ** để giải quyết bài toán thực tế của doanh nghiệp.
+
+### Hình ảnh tham dự sự kiện
+
+![Ảnh nhóm tham dự FCAJ Community Day lần 2](/images/4-EventParticipated/4.2-Event2/group-photo.png)

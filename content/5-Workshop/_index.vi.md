@@ -1,33 +1,31 @@
 ---
 title: "Workshop"
-date: 2024-01-01
+date: 2026-07-04
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Mini E-commerce DevOps Platform
 
+#### Tổng quan nội dung workshop
 
-# Đảm bảo truy cập Hybrid an toàn đến S3 bằng cách sử dụng VPC endpoint
+Mục 5 trình bày quá trình triển khai thực nghiệm của đề tài Mini E-commerce DevOps Platform. Nội dung được viết theo hướng báo cáo kỹ thuật, không chỉ liệt kê câu lệnh mà còn giải thích mục tiêu, bối cảnh, kết quả mong đợi và ý nghĩa của từng giai đoạn triển khai.
 
-#### Tổng quan
+Đề tài sử dụng ứng dụng Online Boutique làm workload microservices mẫu, sau đó xây dựng thêm lớp DevOps gồm Docker Compose, Terraform, Amazon EKS, Amazon ECR, Amazon RDS, GitHub Actions, Argo CD, External Secrets Operator, Prometheus, Grafana và CloudWatch. Việc triển khai được chia thành hai môi trường chính: môi trường local để kiểm thử đầy đủ nghiệp vụ và môi trường AWS để chứng minh khả năng vận hành trên hạ tầng cloud thực tế.
 
-**AWS PrivateLink** cung cấp kết nối riêng tư đến các dịch vụ aws từ VPCs hoặc trung tâm dữ liệu (on-premise) mà không làm lộ lưu lượng truy cập ra ngoài public internet.
+#### Phạm vi triển khai
 
-Trong bài lab này, chúng ta sẽ học cách tạo, cấu hình, và kiểm tra VPC endpoints để cho phép workload của bạn tiếp cận các dịch vụ AWS mà không cần đi qua Internet công cộng.
++ Môi trường local dùng Docker Compose để chạy đầy đủ các service của ứng dụng, bao gồm frontend, catalog, cart, checkout, currency, shipping, payment, email, Redis và PostgreSQL.
++ Môi trường AWS dùng EKS và GitOps để triển khai nhóm service cốt lõi, phơi bày giao diện qua Application Load Balancer và quản lý secret qua AWS Secrets Manager.
++ Hạ tầng cloud được tạo bằng Terraform, có thể dựng lại và thu hồi theo mô hình tạm thời nhằm kiểm soát chi phí.
++ Quy trình CI/CD sử dụng GitHub Actions với OIDC, build image, push lên ECR, quét bảo mật và cập nhật repository GitOps.
 
-Chúng ta sẽ tạo hai loại endpoints để truy cập đến Amazon S3: gateway vpc endpoint và interface vpc endpoint. Hai loại vpc endpoints này mang đến nhiều lợi ích tùy thuộc vào việc bạn truy cập đến S3 từ môi trường cloud hay từ trung tâm dữ liệu (on-premise).
-+ **Gateway** - Tạo gateway endpoint để gửi lưu lượng đến Amazon S3 hoặc DynamoDB using private IP addresses. Bạn điều hướng lưu lượng từ VPC của bạn đến gateway endpoint bằng các bảng định tuyến (route tables)
-+ **Interface** - Tạo interface endpoint để gửi lưu lượng đến các dịch vụ điểm cuối (endpoints) sử dụng Network Load Balancer để phân phối lưu lượng. Lưu lượng dành cho dịch vụ điểm cuối được resolved bằng DNS.
+#### Cấu trúc mục 5
 
-#### Nội dung
-
-1. [Tổng quan về workshop](5.1-Workshop-overview/)
-2. [Chuẩn bị](5.2-Prerequiste/)
-3. [Truy cập đến S3 từ VPC](5.3-S3-vpc/)
-4. [Truy cập đến S3 từ TTDL On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (làm thêm)](5.5-Policy/)
-6. [Dọn dẹp tài nguyên](5.6-Cleanup/)
+1. [Giới thiệu tổng quan](5.1-Workshop-overview/) trình bày kiến trúc triển khai, phạm vi và mô hình hai repository.
+2. [Chuẩn bị môi trường](5.2-prerequisite/) mô tả công cụ, AWS CLI, Terraform backend và cấu hình ban đầu.
+3. [Phát triển local với Docker Compose](5.3-local-docker-compose/) kiểm thử ứng dụng ở môi trường cục bộ trước khi triển khai cloud.
+4. [Triển khai lên AWS EKS](5.4-aws-eks/) dựng hạ tầng, cài thành phần nền tảng và đồng bộ ứng dụng qua GitOps.
+5. [CI/CD và bảo mật](5.5-cicd-security/) trình bày pipeline, OIDC, quét lỗ hổng, ký image và quản lý secret.
+6. [Thu hồi tài nguyên](5.6-Cleanup/) mô tả cách dọn dẹp môi trường sau demo để tránh phát sinh chi phí.

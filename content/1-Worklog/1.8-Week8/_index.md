@@ -1,57 +1,33 @@
 ---
 title: "Week 8 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-06-08
+weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 8 objectives:
 
-### Week 8 Objectives:
+* Review Week 7 topics: system optimization, operational automation, CloudWatch/Grafana, tags, Systems Manager, and CloudFormation.
+* Learn the main optimization pillars on AWS: security, reliability, performance, and cost.
+* Understand IAM Identity Center, Security Hub, WAF, KMS, AWS Backup, VPC Peering, Transit Gateway, ECS, CodePipeline, and cost analysis tools.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **June 8–14, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 7 content on system optimization, operational automation, CloudWatch/Grafana, tags, Systems Manager, and CloudFormation. <br> **Security pillar in the optimization track:** <br>&emsp; + Learn AWS IAM Identity Center/SSO, IAM Permission Boundaries, and role-assumption limits with conditions. <br>&emsp; + Explore AWS Security Hub, AWS WAF, and AWS KMS for security assessment, application/API protection, and key management. | June 8, 2026 | June 9, 2026 | <https://000012.awsstudygroup.com/><br><https://000030.awsstudygroup.com/><br><https://000018.awsstudygroup.com/><br><https://000026.awsstudygroup.com/><br><https://000033.awsstudygroup.com/> |
+| 3 | **Reliability pillar:** <br>&emsp; + Understand AWS Backup for backup planning, backup vaults, backup plans, and restore testing. <br>&emsp; + Learn VPC Peering and Transit Gateway to connect multiple VPCs, centralize network management, and support system scaling. | June 9, 2026 | June 10, 2026 | <https://000013.awsstudygroup.com/><br><https://000019.awsstudygroup.com/><br><https://000020.awsstudygroup.com/> |
+| 4 | **Performance and application deployment pillar:** <br>&emsp; + Review Docker, container images, Dockerfiles, and application packaging workflows. <br>&emsp; + Learn deploying applications on Amazon ECS and automating deployment with AWS CodePipeline. <br>&emsp; + Get an overview of File Storage Gateway, Amazon FSx, data lakes, and advanced DynamoDB concepts. | June 10, 2026 | June 11, 2026 | <https://000015.awsstudygroup.com/><br><https://000016.awsstudygroup.com/><br><https://000017.awsstudygroup.com/><br><https://000024.awsstudygroup.com/><br><https://000025.awsstudygroup.com/> |
+| 5 | **Cost optimization pillar:** <br>&emsp; + Understand Savings Plans, Reserved Instances/Reserved DB Instances, EC2 Resource Optimization, and cost visualization. <br>&emsp; + Learn advanced cost analysis with AWS Glue and Amazon Athena. | June 11, 2026 | June 12, 2026 | <https://000042.awsstudygroup.com/><br><https://000040.awsstudygroup.com/> |
+| 6 | **Summary and cleanup:** <br>&emsp; + Connect security, reliability, performance, and cost optimization with real-world operations after deployment or workload migration to AWS. <br> **Cleanup:** Remove lab resources—test security configurations, backup plans, network connections, ECS/CodePipeline demos, and cost dashboards—to limit unexpected charges. | June 12, 2026 | June 14, 2026 | <https://cloudjourney.awsstudygroup.com/3-optimize/> |
 
-### Week 8 Achievements:
+### Week 8 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understands the key optimization pillars on AWS: security, reliability, performance, and cost.
 
-* Successfully created and configured an AWS Free Tier account.
+* Knows the roles of Security Hub, WAF, KMS, AWS Backup, VPC Peering, Transit Gateway, ECS, CodePipeline, and cost analysis tools.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Can connect system optimization knowledge with practical operations after deploying or migrating workloads to AWS.

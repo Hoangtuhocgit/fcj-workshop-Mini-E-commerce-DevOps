@@ -1,57 +1,34 @@
 ---
 title: "Week 2 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-04-27
+weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+### Week 2 objectives:
 
+* Review Week 1 topics: AWS Console, AWS CLI, EC2, EBS, SSH, and Elastic IP.
+* Learn cost management with AWS Budgets and access administration with IAM (theory + hands-on practice).
+* Understand networking with Amazon VPC; practice core VPC tasks and Amazon S3 (objects + static websites).
 
-### Week 2 Objectives:
-
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **April 27–May 3, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 1 content on AWS Console, AWS CLI, EC2, EBS, SSH, and Elastic IP. | April 27, 2026 | April 27, 2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
+| 3 | **Explore cost management with AWS Budgets:** <br>&emsp; + Cost budgets, usage budgets, and cost alerts. <br>&emsp; + Monitor spending to limit unexpected charges. | April 28, 2026 | April 28, 2026 | <https://000007.awsstudygroup.com/> |
+| 4 | **Study access administration with AWS Identity and Access Management (IAM):** <br>&emsp; + IAM Users, IAM Groups, IAM Policies, and IAM Roles. <br>&emsp; + Least-privilege access principles and account security. <br> **IAM lab:** <br>&emsp; + Create IAM Groups and IAM Users and attach appropriate policies. <br>&emsp; + Sign in, verify permissions as an IAM User, and explore basic IAM Roles. | April 29, 2026 | April 30, 2026 | <https://000002.awsstudygroup.com/> |
+| 5 | **Study networking with Amazon VPC:** <br>&emsp; + VPC, Subnets, Route Tables, Internet Gateway. <br>&emsp; + Public vs private subnets, Security Groups, and Network ACLs. <br> **Basic VPC lab:** <br>&emsp; + Create a VPC, Subnets, Internet Gateway, and Route Tables. <br>&emsp; + Configure Security Groups for EC2 and validate connectivity. | May 1, 2026 | May 2, 2026 | <https://000003.awsstudygroup.com/> |
+| 6 | **Learn and practice Amazon S3:** <br>&emsp; + Create an S3 bucket and upload HTML/CSS files. <br>&emsp; + Enable static website hosting and verify the static site. <br>&emsp; + Clean up resources after the lab. | May 2, 2026 | May 3, 2026 | <https://000057.awsstudygroup.com/> |
 
-### Week 2 Achievements:
+### Week 2 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Can control costs with AWS Budgets and configure basic alerts.
 
-* Successfully created and configured an AWS Free Tier account.
+* Understand IAM authorization and the roles of Users, Groups, Policies, and Roles.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* Understand core VPC networking components and how EC2 connects to the Internet.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Can use S3 for object storage and simple static website hosting.

@@ -1,57 +1,32 @@
 ---
 title: "Week 3 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-05-04
+weight: 3
 chapter: false
 pre: " <b> 1.3. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+### Week 3 objectives:
 
+* Review Week 2 content on AWS Budgets, IAM, VPC, and Amazon S3.
+* Practice IAM Roles for EC2 and AWS Cloud9; provision a basic Amazon RDS database.
+* Monitor resources with Amazon CloudWatch; clean up lab resources proactively.
 
-### Week 3 Objectives:
-
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **May 4–10, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 2 content on AWS Budgets, IAM, VPC, and Amazon S3. | May 4, 2026 | May 4, 2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
+| 3 | **Learn and practice IAM Roles for EC2:** <br>&emsp; + Create an IAM Role, attach policies, and assign the role to an EC2 instance. <br>&emsp; + Verify EC2 access to S3 with the AWS CLI without configuring Access Keys directly on the instance. | May 5, 2026 | May 6, 2026 | <https://000048.awsstudygroup.com/> |
+| 4 | **Explore AWS Cloud9:** <br>&emsp; + Get comfortable with the cloud IDE, terminal, and basic AWS CLI commands. | May 6, 2026 | May 7, 2026 | <https://000049.awsstudygroup.com/> |
+| 5 | **Learn and practice Amazon RDS:** <br>&emsp; + Study DB instances, DB engines, endpoints, backups, and snapshots. <br>&emsp; + Create a Free Tier MySQL/PostgreSQL instance, configure Security Groups, and connect from EC2 or Cloud9. | May 7, 2026 | May 8, 2026 | <https://000005.awsstudygroup.com/> |
+| 6 | **Amazon CloudWatch fundamentals:** <br>&emsp; + Monitor EC2/RDS metrics and create a simple alarm. <br> **Cleanup:** Remove resources after hands-on work to limit unexpected charges. | May 8, 2026 | May 10, 2026 | <https://000008.awsstudygroup.com/> |
 
-### Week 3 Achievements:
+### Week 3 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Can grant EC2 permissions securely using IAM Roles.
 
-* Successfully created and configured an AWS Free Tier account.
+* Comfortable with Cloud9 for practice and development in the cloud.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Can create and connect to a basic RDS instance and monitor resources with CloudWatch.

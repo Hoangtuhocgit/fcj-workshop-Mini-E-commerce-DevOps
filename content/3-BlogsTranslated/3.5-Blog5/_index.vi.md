@@ -1,127 +1,91 @@
 ---
-title: "Blog 5"
-date: 2024-01-01
-weight: 1
+title: "EC2 C9g / C9gd Graviton5"
+date: 2026-06-30
+weight: 5
 chapter: false
-pre: " <b> 3.6. </b> "
+pre: " <b> 3.5. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Amazon EC2 C9g và C9gd trên AWS Graviton5
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+#### 1. Thông tin nguồn
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+| Hạng mục | Nội dung |
+|---|---|
+| Tiêu đề gốc | Amazon EC2 C9g and C9gd instances powered by AWS Graviton5 processors are now available |
+| Nguồn | [AWS News Blog](https://aws.amazon.com/blogs/aws/amazon-ec2-c9g-and-c9gd-instances-powered-by-aws-graviton5-processors-are-now-available/) |
+| Chủ đề | Amazon EC2, AWS Graviton5, instance compute-optimized |
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
+![Hình minh họa từ bài viết gốc](/images/3-BlogsTranslated/3.5-Blog5/hero.png)
 
----
+#### 2. Tóm tắt nội dung
 
-## Hướng dẫn kiến trúc
+Bài viết công bố **general availability** của dòng instance **Amazon EC2 C9g** và **C9gd** sử dụng bộ xử lý **AWS Graviton5**. Đây là nhóm instance **compute-optimized**, phù hợp các workload tính toán chuyên sâu như phân tích thời gian thực, xử lý theo lô, mã hóa video, mô hình khoa học, suy luận máy học trên CPU và các tác vụ agentic AI.
 
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
+#### 3. Nội dung chính
 
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
+**3.1. Đặc tính hiệu năng**
 
-**Kiến trúc giải pháp bây giờ như sau:**
+Theo bài viết, C9g mang lại hiệu năng trên mỗi vCPU cao hơn tới **25%** so với thế hệ trước **C8g**. Instance sử dụng bộ nhớ **DDR5 8800MT/s** — được mô tả là bộ nhớ nhanh nhất trong các instance dạng processor trên cloud — có bộ nhớ đệm **L3 lớn hơn 5 lần** và khả năng xử lý gói tin cao hơn tới **3 lần** so với các instance dựa trên **Graviton4**.
 
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+C9g phù hợp batch jobs, pipeline mã hóa video hoặc distributed analytics khi dùng **Amazon EBS** làm lưu trữ chính; đồng thời phù hợp workload agentic AI với nhiều môi trường đồng thời và các bước suy luận thiên về CPU.
 
----
+**C9gd** bổ sung ổ **NVMe SSD** cục bộ tốc độ cao, độ trễ thấp — ví dụ không gian tạm trong mô phỏng HPC, cache tạm cho ML inference, hoặc buffer cục bộ cho ad-serving. Instance store NVMe trên Graviton5 hỗ trợ thống kê hiệu năng chi tiết (latency histogram theo kích thước I/O, độ phân giải tới **1 giây**), truy cập qua **Amazon CloudWatch** hoặc **nvme-cli**, **không phát sinh chi phí thêm**.
 
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
+**3.2. Thông số chính**
 
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
+Cả hai dòng có **11 kích thước** từ `medium` đến `48xlarge`, kèm tùy chọn **bare metal**. Trung bình, băng thông mạng cao hơn tới **15%** và băng thông EBS cao hơn tới **20%** so với thế hệ trước. Kích thước `48xlarge` đạt tới **100 Gbps** mạng và **72 Gbps** EBS (**gấp đôi** so với thế hệ trước ở mức lớn nhất).
 
----
+**Bảng thông số C9g**
 
-## Lựa chọn công nghệ và phạm vi giao tiếp
+| C9g | vCPUs | Memory (GiB) | Network (Gbps) | EBS (Gbps) |
+|---|---:|---:|---|---|
+| medium | 1 | 2 | Up to 15 | Up to 12 |
+| large | 2 | 4 | Up to 15 | Up to 12 |
+| xlarge | 4 | 8 | Up to 15 | Up to 12 |
+| 2xlarge | 8 | 16 | Up to 17 | Up to 12 |
+| 4xlarge | 16 | 32 | Up to 17 | Up to 12 |
+| 8xlarge | 32 | 64 | 17 | 12 |
+| 12xlarge | 48 | 96 | 25 | 18 |
+| 16xlarge | 64 | 128 | 34 | 24 |
+| 24xlarge | 96 | 192 | 50 | 36 |
+| 48xlarge | 192 | 384 | 100 | 72 |
+| metal-48xl | 192 | 384 | 100 | 72 |
 
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+**Bảng thông số C9gd** (thêm instance storage; hiệu năng storage cục bộ cao hơn tới **30%** so với thế hệ trước)
 
----
+| C9gd | vCPUs | Memory (GiB) | Instance Storage (GB) | Network (Gbps) | EBS (Gbps) |
+|---|---:|---:|---|---|---|
+| medium | 1 | 2 | 1 × 59 | Up to 15 | Up to 12 |
+| large | 2 | 4 | 1 × 118 | Up to 15 | Up to 12 |
+| xlarge | 4 | 8 | 1 × 237 | Up to 15 | Up to 12 |
+| 2xlarge | 8 | 16 | 1 × 474 | Up to 17 | Up to 12 |
+| 4xlarge | 16 | 32 | 1 × 950 | Up to 17 | Up to 12 |
+| 8xlarge | 32 | 64 | 1 × 1900 | 17 | 12 |
+| 12xlarge | 48 | 96 | 3 × 950 | 25 | 18 |
+| 16xlarge | 64 | 128 | 1 × 3800 | 34 | 24 |
+| 24xlarge | 96 | 192 | 3 × 1900 | 50 | 36 |
+| 48xlarge | 192 | 384 | 3 × 3800 | 100 | 72 |
+| metal-48xl | 192 | 384 | 3 × 3800 | 100 | 72 |
 
-## The pub/sub hub
+Cả hai dòng phù hợp HPC, batch processing, gaming, video encoding, scientific modeling, distributed analytics, CPU-based ML inference và ad serving.
 
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
+**3.3. Tính năng bổ sung và bảo mật**
 
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
+- **Instance Bandwidth Configuration (IBC):** điều chỉnh phân bổ băng thông giữa Amazon EBS và Amazon VPC tới **25%**.
+- Hỗ trợ **ENA Express**.
+- Gắn tới **128 volume EBS** trên instance ảo.
+- Hình thức mua: **Savings Plans**, **On-Demand**, **Spot Instances**, **Dedicated Instances** và **Dedicated Hosts**.
+- **Nitro Isolation Engine:** C9g/C9gd là các instance compute-optimized đầu tiên tích hợp thành phần tăng cường của Nitro System, dùng formal verification để bảo đảm cô lập giữa các máy ảo, bao gồm kiểm soát truy cập memory, CPU register state và thiết bị I/O qua tập API tối thiểu.
 
----
+**3.4. Phạm vi áp dụng**
 
-## Core microservice
+Các instance hiện có tại **US East (Ohio, N. Virginia)**, **US West (Oregon)** và **Europe (Frankfurt)**; các Region khác sẽ được mở rộng sau. Có thể khởi chạy qua AWS Management Console, AWS CLI hoặc AWS SDKs.
 
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
+#### 4. Nhận xét
 
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
+Bài viết cung cấp bức tranh khá đầy đủ về thế hệ compute Graviton mới trên Amazon EC2, không chỉ nêu mức tăng hiệu năng tổng quát mà còn chi tiết hóa bộ nhớ, cache, khả năng xử lý gói tin, băng thông mạng/EBS và tùy chọn lưu trữ cục bộ. Việc tách C9g và C9gd giúp người đọc xác định rõ khi nào chỉ cần compute gắn EBS và khi nào cần NVMe local cho scratch, cache tạm hoặc buffer độ trễ thấp.
 
----
+Các số liệu so sánh với C8g và Graviton4, cùng bảng kích thước đầy đủ, hỗ trợ việc lập kế hoạch capacity và ước lượng chi phí thực tế hơn so với các thông báo chỉ mang tính giới thiệu. Các tính năng bổ sung như IBC, ENA Express, giới hạn gắn volume EBS và Nitro Isolation Engine cho thấy dòng instance này hướng tới cả hiệu năng lẫn yêu cầu cô lập/bảo mật trong môi trường cloud dùng chung.
 
-## Front door microservice
-
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
-
----
-
-## Staging ER7 microservice
-
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
-
----
-
-## Tính năng mới trong giải pháp
-
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Trong thực tiễn, bài viết hữu ích khi đánh giá nâng cấp từ thế hệ Graviton trước, lựa chọn instance cho HPC, batch, video encoding, inference trên CPU hoặc workload agentic AI. Khi áp dụng, cần đối chiếu Region khả dụng, hình thức mua (On-Demand, Spot, Savings Plans, Dedicated) và đặc thù I/O của ứng dụng để quyết định giữa C9g và C9gd. Đây là tài liệu tham khảo tốt cho phần phân tích lựa chọn hạ tầng compute trong báo cáo kỹ thuật.

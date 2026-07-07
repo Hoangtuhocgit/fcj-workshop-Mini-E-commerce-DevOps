@@ -1,59 +1,34 @@
 ---
 title: "Worklog Tuần 2"
-date: 2024-01-01
-weight: 1
+date: 2026-04-27
+weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
-
 ### Mục tiêu tuần 2:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Ôn tập nội dung tuần 1 về AWS Console, AWS CLI, EC2, EBS, SSH và Elastic IP.
+* Nắm quản lý chi phí với AWS Budgets và quản trị truy cập với IAM (lý thuyết + thực hành).
+* Hiểu kiến thức mạng với Amazon VPC; thực hành VPC cơ bản và Amazon S3 (object + website tĩnh).
+
+### Khung thời gian tuần: **27/04/2026 – 03/05/2026**
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 2 | Ôn tập nội dung tuần 1 về AWS Console, AWS CLI, EC2, EBS, SSH và Elastic IP. | 27/04/2026 | 27/04/2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
+| 3 | **Tìm hiểu quản lý chi phí với AWS Budgets:** <br>&emsp; + Cost Budget, Usage Budget và cảnh báo chi phí. <br>&emsp; + Theo dõi chi phí để hạn chế phát sinh ngoài dự kiến. | 28/04/2026 | 28/04/2026 | <https://000007.awsstudygroup.com/> |
+| 4 | **Tìm hiểu quản trị truy cập với AWS Identity and Access Management (IAM):** <br>&emsp; + IAM User, IAM Group, IAM Policy và IAM Role. <br>&emsp; + Nguyên tắc phân quyền tối thiểu và bảo mật tài khoản. <br> **Thực hành IAM:** <br>&emsp; + Tạo IAM Group, IAM User và gán policy phù hợp. <br>&emsp; + Đăng nhập, kiểm tra quyền bằng IAM User và tìm hiểu IAM Role cơ bản. | 29/04/2026 | 30/04/2026 | <https://000002.awsstudygroup.com/> |
+| 5 | **Tìm hiểu kiến thức mạng với Amazon VPC:** <br>&emsp; + VPC, Subnet, Route Table, Internet Gateway. <br>&emsp; + Public Subnet, Private Subnet, Security Group và Network ACL. <br> **Thực hành VPC cơ bản:** <br>&emsp; + Tạo VPC, Subnet, Internet Gateway và Route Table. <br>&emsp; + Cấu hình Security Group cho EC2 và kiểm tra kết nối. | 01/05/2026 | 02/05/2026 | <https://000003.awsstudygroup.com/> |
+| 6 | **Tìm hiểu và thực hành Amazon S3:** <br>&emsp; + Tạo S3 bucket và upload file HTML/CSS. <br>&emsp; + Bật Static Website Hosting và kiểm tra website tĩnh. <br>&emsp; + Dọn dẹp tài nguyên sau khi thực hành. | 02/05/2026 | 03/05/2026 | <https://000057.awsstudygroup.com/> |
 
 ### Kết quả đạt được tuần 2:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Biết kiểm soát chi phí bằng AWS Budgets và thiết lập cảnh báo cơ bản.
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+* Hiểu cơ chế phân quyền IAM và vai trò của User, Group, Policy, Role.
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+* Hiểu các thành phần mạng chính trong VPC và cách EC2 kết nối Internet.
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Biết sử dụng S3 để lưu trữ object và hosting website tĩnh đơn giản.

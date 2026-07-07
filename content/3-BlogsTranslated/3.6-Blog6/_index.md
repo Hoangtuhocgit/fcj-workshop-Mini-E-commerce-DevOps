@@ -1,126 +1,110 @@
 ---
-title: "Blog 6"
-date: 2024-01-01
-weight: 1
+title: "S3 annotations"
+date: 2026-06-16
+weight: 6
 chapter: false
 pre: " <b> 3.6. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# Amazon S3 annotations
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Amazon S3 annotations: attach rich, queryable context directly to your objects |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/amazon-s3-annotations-attach-rich-queryable-context-directly-to-your-objects/) |
+| Topic | Amazon S3, metadata, queryable object context |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.6-Blog6/hero.png)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+**S3 annotations** attach rich business context directly to objects: up to **1,000** named annotations per object, **1 MB** each, totaling up to **1 GB** per object, in JSON, XML, YAML, or plain text. Annotations are mutable without rewriting objects.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+#### 3. Main content
 
-**The solution architecture is now as follows:**
+**3.1. Role of annotations**
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+Context moves with objects during copy, replication, and cross-region transfers, and is removed when the object is deleted. With **S3 Metadata** enabled, annotations flow into managed Iceberg **annotation tables** queryable with **Amazon Athena**. Annotations can be queried for objects in **any storage class** without restoring objects or paying retrieval charges, including data in **S3 Glacier**.
 
----
+Use cases highlighted in the article include:
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+- **Media & Entertainment:** transcripts, moderation results, subtitles, and rights metadata on video assets.
+- **Financial Services:** AI-generated investment summaries and sentiment analysis on research documents, enabling agents to find datasets with natural-language queries.
+- **Life Sciences:** regulatory status, patient cohort context, and approval trails on clinical trial data; context remains accessible for data stored in **Amazon S3 Glacier** without retrieval charges.
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+**3.2. Comparison with existing metadata**
 
----
+| Capability | Max size | Mutable? | Best for |
+|---|---|---|---|
+| System-defined metadata | Fixed | No | Object properties |
+| User-defined metadata | **2 KB** | No (set at upload) | Small key-value pairs |
+| Object tags | **10 tags**, **128/256** characters per key/value | Yes | Access control, lifecycle, cost allocation |
+| Annotations | **1 GB** (1,000 × 1 MB) | Yes | Rich business context (JSON, XML, YAML, text) |
 
-## Technology Choices and Communication Scope
+**3.3. Basic usage**
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+Requires `s3:PutObjectAnnotation` and `s3:GetObjectAnnotation`. For multipart uploads, attach annotations **after** the upload completes. Multiple named annotations can coexist on one object for concurrent enrichment workflows.
 
----
+Example command to attach a JSON technical annotation:
 
-## The Pub/Sub Hub
+```bash
+aws s3api put-object-annotation \
+  --bucket my-media-bucket \
+  --key videos/documentary-2026.mp4 \
+  --annotation-name mediainfo \
+  --annotation-payload ./mediainfo.json
+```
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+| API | Purpose |
+|---|---|
+| `GetObjectAnnotation` | Read a specific annotation |
+| `ListObjectAnnotations` | List all annotations on an object |
+| `DeleteObjectAnnotation` | Delete an annotation |
+| `PutObjectAnnotation` (same name) | Update an existing annotation |
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+![Add annotations](/images/3-BlogsTranslated/3.6-Blog6/figure-1.png)
 
----
+![List annotations](/images/3-BlogsTranslated/3.6-Blog6/figure-2.png)
 
-## Core Microservice
+**3.4. Large-scale querying**
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+Enable annotation tables via the console or `CreateBucketMetadataConfiguration` / `UpdateBucketMetadataAnnotationTableConfiguration`. Journal tables update in near real time; annotation tables refresh within about **one hour**. Backfill of existing annotations may take **hours to days**. Natural-language discovery is supported through **Amazon SageMaker Unified Studio** agents or the **S3 Tables MCP server**.
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+- **Journal tables:** update in near real time for tracking annotation changes.
+- **Annotation tables:** refresh in about **one hour** and adapt to JSON/XML/YAML structure, with each annotation represented as a row and content available in `text_value`.
+- Existing annotated objects are backfilled in the background; duration can range from **hours to days** depending on object volume.
 
----
+Example Athena query to find videos with more than 8 audio tracks:
 
-## Front Door Microservice
+```sql
+SELECT DISTINCT bucket, object_key
+FROM "s3tablescatalog/aws-s3"."b_my_media_bucket"."annotation"
+WHERE name = 'mediainfo'
+AND CAST(json_extract_scalar(text_value, '$.audio_tracks') AS INTEGER) > 8
+```
 
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
+Example query to monitor new annotations in the last 24 hours through the journal table:
 
----
+```sql
+SELECT bucket, key, version_id, record_timestamp, annotation.name
+FROM "s3tablescatalog/aws-s3"."b_my_media_bucket"."journal"
+WHERE record_timestamp >= (current_date - interval '1' day)
+AND annotation.name IS NOT NULL
+AND record_type IN ('CREATE_ANNOTATION', 'DELETE_ANNOTATION')
+```
 
-## Staging ER7 Microservice
+**3.5. Availability and pricing**
 
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
+- **Annotations:** available in **all AWS Regions**, including **AWS China Regions**.
+- **Annotation tables:** available in Regions where **S3 Metadata** is available.
+- Annotation storage is billed at **S3 Standard** rates even when the parent object uses Glacier or another storage class.
 
----
+#### 4. Remarks
 
-## New Features in the Solution
+The article addresses a common data-management limitation: business metadata often lives in external databases or sidecar files, creating synchronization cost and drift risk. S3 annotations attach context directly to objects, support independent updates, and move with objects during copy or replication, reducing the operational burden of separate metadata systems.
 
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Technically, annotations offer much larger and more flexible context than tags or user-defined metadata, and multiple named annotations can coexist on one object. Indexing into Iceberg tables and querying with Athena extends annotations from per-object operations to bucket-scale analysis. Querying annotations without restoring cold-storage objects is also valuable for long-term archives and compliance audits.
+
+For data lakes, digital-asset management, and agentic discovery workflows, the article provides a practical approach to unified metadata. Adoption should consider S3 Standard billing for annotation storage, annotation-table refresh latency, backfill duration, and related API permissions.

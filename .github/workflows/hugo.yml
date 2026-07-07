@@ -23,7 +23,7 @@ jobs:
           extended: true
 
       - name: Build website
-        run: hugo --minify
+        run: hugo --minify --baseURL "https://voanhkiet1410.github.io/fcj-workshop-Mini-E-commerce-DevOps/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

@@ -1,57 +1,31 @@
 ---
 title: "Week 12 Worklog"
-date: 2024-01-01
-weight: 2
+date: 2026-07-06
+weight: 12
 chapter: false
 pre: " <b> 1.12. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 12 objectives:
 
-### Week 12 Objectives:
+* Review Week 11 topics: Lightsail Container, Amazon EKS, AWS Fargate, container CI/CD, and monolith to microservices.
+* Learn AWS Data & Analytics fundamentals: data lakes, ETL/ELT, data warehouses, BI, and data governance.
+* Practice a simulated data analytics workflow and clean up lab resources.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **July 6–12, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 11 content on Lightsail Container, Amazon EKS, AWS Fargate, container CI/CD, and monolith to microservices. <br> **AWS Data & Analytics overview:** <br>&emsp; + Understand goals for a modern data platform: ingest, store, process, analyze, and visualize data. <br>&emsp; + Learn concepts such as data lakes, ETL/ELT pipelines, real-time analytics, data warehouses, business intelligence, and data governance. | July 6, 2026 | July 6, 2026 | <https://cloudjourney.awsstudygroup.com/6-dataandanalytic/><br><https://000072.awsstudygroup.com/> |
+| 3 | **Building a data lake on AWS:** <br>&emsp; + Understand the role of Amazon S3 for raw, processed, and analytics-ready data. <br>&emsp; + Learn bucket/folder organization, partitioning, versioning, lifecycle rules, encryption, and access control with IAM/KMS. | July 7, 2026 | July 8, 2026 | <https://000035.awsstudygroup.com/><br><https://000070.awsstudygroup.com/> |
+| 4 | **AWS Glue and Amazon Athena:** <br>&emsp; + Understand AWS Glue Crawler, Glue Data Catalog, and Glue Jobs for metadata discovery and data processing. <br>&emsp; + Learn how to query S3 data with Amazon Athena using SQL and optimize queries with partitions. | July 8, 2026 | July 9, 2026 | <https://000040.awsstudygroup.com/><br><https://000106.awsstudygroup.com/> |
+| 5 | **Data warehousing and visualization:** <br>&emsp; + Get an overview of Amazon Redshift for data warehouse and large-scale analytics use cases. <br>&emsp; + Explore Amazon QuickSight datasets, analyses, and dashboards for reporting and visualization. <br> **Real-time data processing:** <br>&emsp; + Understand Amazon Kinesis Data Streams/Firehose for collecting and delivering streaming data to S3 or analytics services. <br>&emsp; + Relate CloudWatch logs and metrics to monitoring data pipeline health. | July 9, 2026 | July 10, 2026 | <https://000072.awsstudygroup.com/><br><https://000073.awsstudygroup.com/><br><https://000105.awsstudygroup.com/> |
+| 6 | **Hands-on data analytics simulation:** <br>&emsp; + Create an S3 bucket, upload sample CSV/JSON data, create a Glue Crawler, and verify tables in the Glue Data Catalog. <br>&emsp; + Run basic Athena queries and simulate building a QuickSight dashboard at an introductory level. <br> **Cleanup:** <br>&emsp; + Remove S3 objects, Glue Crawlers, Glue databases/tables, Athena query results, Kinesis streams, and test dashboards to limit unexpected charges. | July 10, 2026 | July 12, 2026 | <https://000070.awsstudygroup.com/><br><https://000106.awsstudygroup.com/><br><https://000073.awsstudygroup.com/> |
 
-### Week 12 Achievements:
+### Week 12 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understand the modern data architecture on AWS from storage and processing to analytics and visualization.
 
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Know the roles of Amazon S3, AWS Glue, Amazon Athena, Amazon Redshift, Amazon QuickSight, and Amazon Kinesis in the Data & Analytics ecosystem.

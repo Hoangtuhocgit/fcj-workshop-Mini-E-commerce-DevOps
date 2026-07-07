@@ -1,59 +1,33 @@
 ---
 title: "Worklog Tuần 9"
-date: 2024-01-01
-weight: 1
+date: 2026-06-15
+weight: 9
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
 
 ### Mục tiêu tuần 9:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Ôn tập nội dung tuần 8 về bảo mật, độ tin cậy, hiệu năng và tối ưu chi phí trên AWS.
+* Tìm hiểu lộ trình hiện đại hóa ứng dụng từ monolith sang microservices và serverless.
+* Nắm CI/CD, tách microservice, database-per-service, messaging/eventing và các dịch vụ container trên AWS.
+
+### Khung thời gian tuần: **15/06/2026 – 21/06/2026**
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 2 | Ôn tập nội dung tuần 8 về bảo mật, độ tin cậy, hiệu năng và tối ưu chi phí trên AWS. <br> **Tổng quan lộ trình Hiện đại hóa ứng dụng:** <br>&emsp; + Nắm mục tiêu chuyển ứng dụng monolith sang microservices, tách bounded context và giảm phụ thuộc. <br>&emsp; + Tìm hiểu cách host (triển khai) ứng dụng trên AWS và chuẩn bị quy trình phát hành tự động. | 15/06/2026 | 15/06/2026 | <https://cloudjourney.awsstudygroup.com/4-modernize/> |
+| 3 | **Dịch chuyển ứng dụng Monolith:** <br>&emsp; + Phân tích ứng dụng Java Spring Boot/RDBMS, xác định frontend, backend, database và các điểm phụ thuộc. <br>&emsp; + Tìm hiểu các bước đưa ứng dụng lên AWS, cấu hình môi trường chạy và kiểm tra kết nối sau migration. | 16/06/2026 | 17/06/2026 | <https://000050.awsstudygroup.com/> |
+| 4 | **Tự động phát hành ứng dụng và tạo Microservice:** <br>&emsp; + Nắm CI/CD pipeline, source/build/deploy stage và kiểm thử sau triển khai. <br>&emsp; + Tìm hiểu cách tách chức năng trong monolith thành microservice độc lập, có API và dữ liệu riêng. <br> **Cơ cấu lại dữ liệu, workflow, messaging và eventing:** <br>&emsp; + Nhận biết vấn đề shared database, hướng xử lý database-per-service và trao đổi bất đồng bộ bằng SQS/SNS hoặc event-driven. | 17/06/2026 | 18/06/2026 | <https://000051.awsstudygroup.com/><br><https://000052.awsstudygroup.com/><br><https://000053.awsstudygroup.com/><br><https://000054.awsstudygroup.com/> |
+| 5 | **Xác thực ứng dụng và serverless:** <br>&emsp; + Tìm hiểu SPA, Amazon Cognito, API Gateway, Lambda, Step Functions, S3, DynamoDB, SAM, CloudWatch và X-Ray. <br> **Mở đầu phần Container services:** <br>&emsp; + Tìm hiểu Lightsail Container, Amazon EKS, AWS Fargate và CI/CD trên EKS với CodePipeline/GitHub ở mức tổng quan. | 18/06/2026 | 19/06/2026 | <https://000055.awsstudygroup.com/><br><https://000081.awsstudygroup.com/><br><https://000046.awsstudygroup.com/><br><https://000126.awsstudygroup.com/> |
+| 6 | **Tổng hợp và dọn dẹp:** <br>&emsp; + Tổng hợp kiến thức hiện đại hóa ứng dụng: CI/CD, microservice, database tách riêng, messaging/eventing, SPA, Cognito, API Gateway, Lambda và container services. <br> **Dọn dẹp:** Dọn dẹp tài nguyên thực hành như app demo, database thử nghiệm, API Gateway, Lambda, Cognito, S3, SQS/SNS, EKS/Lightsail Container demo và pipeline để hạn chế phát sinh chi phí. | 19/06/2026 | 21/06/2026 | <https://cloudjourney.awsstudygroup.com/4-modernize/> |
 
 ### Kết quả đạt được tuần 9:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Hiểu định hướng hiện đại hóa ứng dụng từ monolith sang microservices và serverless trên AWS.
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+* Nắm các thành phần chính: CI/CD, microservice, database tách riêng, messaging/eventing, SPA, Cognito, API Gateway, Lambda và container services.
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Có cái nhìn tổng quan về ECS/EKS/Fargate và cách kết hợp container với pipeline triển khai.

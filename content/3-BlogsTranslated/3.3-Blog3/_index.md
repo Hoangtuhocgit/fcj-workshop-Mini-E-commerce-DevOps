@@ -1,126 +1,91 @@
 ---
-title: "Blog 3"
-date: 2024-01-01
-weight: 1
+title: "ACM ACME support"
+date: 2026-06-30
+weight: 3
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# ACME support in AWS Certificate Manager
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Automate public TLS certificate issuance with ACME support in AWS Certificate Manager |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/automate-public-tls-certificate-issuance-with-acme-support-in-aws-certificate-manager/) |
+| Topic | AWS Certificate Manager, TLS certificates, ACME protocol |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.3-Blog3/hero.png)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+Certificate lifetimes are becoming shorter: the **CA/Browser Forum** mandates a maximum of **100 days starting March 2027** and **47 days by 2029**. **ACME** is the open protocol behind **Let’s Encrypt** and is supported by clients such as Certbot, cert-manager, and acme.sh.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+ACM now provides a fully managed **ACMEv2** endpoint for public certificates issued by **Amazon Trust Services**. Organizations can create **one or more** managed ACME endpoints.
 
-**The solution architecture is now as follows:**
+#### 3. Main content
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+**3.1. Administrative benefits**
 
----
+PKI administrators can bind **IAM roles** to ACME accounts, define **domain scopes** at the endpoint level, and monitor through **CloudTrail**, **CloudWatch**, and ACM expiry notifications. All certificates—whether issued via console, API, or ACME—can be searched in ACM.
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+With ACME support in ACM, PKI administrators can:
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+- Bind **IAM roles** to ACME accounts to control which domains each client may request.
+- Define **domain scopes** at the endpoint level to enforce organization-wide policy.
+- Monitor certificate requests through **AWS CloudTrail**, operational metrics through **Amazon CloudWatch**, and expiry notifications through **ACM**.
+- Search all certificates in ACM, whether issued through the console, API, or ACME.
 
----
+**3.2. Setup process**
 
-## Technology Choices and Communication Scope
+Create an ACME endpoint, configure **External Account Binding (EAB)**, validate domains at the endpoint level, and point ACME clients to the endpoint. Domain validation stays with the PKI administrator (DNS credentials are not distributed to application owners).
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+| Parameter | Details per the article |
+|---|---|
+| Endpoint type | **Public** (client connects over the public internet) |
+| Certificate type | **Public** (Amazon Trust Services, trusted by browsers and operating systems by default) |
+| Certificate key type | Default **ECDSA P-256**; also supports **RSA 2048** and **ECDSA P-384** |
+| Domain scope | **Exact domain**, **Subdomains**, **Wildcards** (can be deselected to block corresponding certificate types) |
 
----
+![ACME certificates page](/images/3-BlogsTranslated/3.3-Blog3/figure-1.png)
 
-## The Pub/Sub Hub
+Route 53 can create CNAME records automatically; otherwise CNAME records must be created manually at the DNS provider.
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+![Create ACME endpoint](/images/3-BlogsTranslated/3.3-Blog3/figure-3.png)
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+![Domain and scope configuration](/images/3-BlogsTranslated/3.3-Blog3/figure-5.png)
 
----
+![Endpoint setup progress](/images/3-BlogsTranslated/3.3-Blog3/figure-7.png)
 
-## Core Microservice
+EAB credentials consist of a **Key ID** and **HMAC key**. After registration, the client generates its own asymmetric key pair for subsequent requests.
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+![Create EAB credentials](/images/3-BlogsTranslated/3.3-Blog3/figure-11.png)
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+The console provides sample commands for Certbot and acme.sh. For example, with Certbot:
 
----
+```bash
+certbot certonly --standalone --non-interactive --agree-tos \
+    --email <EMAIL> \
+    --server https://acm-acme-enroll.us-east-1.api.aws/<ENDPOINT_ID>/directory \
+    --eab-kid <EAB_KID> \
+    --eab-hmac-key <EAB_HMAC_KEY> \
+    --issuance-timeout <ISSUANCE_TIMEOUT> \
+    -d <DOMAIN>
+```
 
-## Front Door Microservice
+![CLI reference](/images/3-BlogsTranslated/3.3-Blog3/figure-19.png)
 
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
+![Issued ACME certificates](/images/3-BlogsTranslated/3.3-Blog3/figure-21.png)
 
----
+**3.3. Availability and pricing**
 
-## Staging ER7 Microservice
+Available in **all commercial AWS Regions**; later availability is planned for **AWS GovCloud (US)**, **China Regions**, and the **AWS European Sovereign Cloud**. Pricing is per domain at issuance, with different rates for FQDNs and wildcards, and volume tiers based on total domain occurrences per month.
 
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
+#### 4. Remarks
 
----
+The article reflects the growing need to automate TLS certificate lifecycles as validity periods become shorter under CA/Browser Forum guidance. ACME support in ACM lets organizations reuse existing clients such as Certbot and cert-manager while keeping certificates under centralized AWS governance.
 
-## New Features in the Solution
+A key design point is role separation: PKI administrators validate domains and enforce scopes at the endpoint, while application owners request certificates with EAB credentials only. This reduces DNS-credential sprawl and supports consistent policy for exact domains, subdomains, and wildcards. CloudTrail, CloudWatch, and expiry notifications further improve auditability and day-2 operations.
 
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+For systems with many services, environments, or Kubernetes workloads, the article provides a practical reference for standardizing public HTTPS issuance. Adoption should consider scope policy, EAB credential lifetime, and domain-based pricing for FQDNs and wildcards.

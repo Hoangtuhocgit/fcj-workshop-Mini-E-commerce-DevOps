@@ -1,126 +1,73 @@
 ---
-title: "Blog 1"
-date: 2024-01-01
+title: "EKS version rollbacks"
+date: 2026-07-01
 weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+# Nâng cấp cluster Amazon EKS với Kubernetes version rollbacks
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+#### 1. Thông tin nguồn
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
+| Hạng mục | Nội dung |
+|---|---|
+| Tiêu đề gốc | Upgrade Amazon EKS clusters with confidence using Kubernetes version rollbacks |
+| Nguồn | [AWS News Blog](https://aws.amazon.com/blogs/aws/upgrade-amazon-eks-clusters-with-confidence-using-kubernetes-version-rollbacks/) |
+| Chủ đề | Amazon EKS, nâng cấp Kubernetes, rollback phiên bản |
 
----
+![Hình minh họa từ bài viết gốc](/images/3-BlogsTranslated/3.1-Blog1/hero.png)
 
-## Hướng dẫn kiến trúc
+#### 2. Tóm tắt nội dung
 
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
+Bài viết trình bày hạn chế lâu nay của việc nâng cấp control plane Kubernetes: Kubernetes mã nguồn mở không hỗ trợ rollback control plane, nên sau khi nâng cấp thường không thể quay lại phiên bản trước. Cộng đồng đang phát triển hướng tiếp cận emulated versions theo **KEP-4330**, nhưng trên thực tế nhiều tổ chức vẫn phải xây dựng cơ chế bù đắp phức tạp như bake period, stagger groups, automated sign-off và chu kỳ nâng cấp kéo dài hàng tháng.
 
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
+Với tần suất phát hành **ba phiên bản minor mỗi năm**, các đội quản lý hàng trăm cluster — đặc biệt trong môi trường có quy định — thường trì hoãn nâng cấp vì thiếu niềm tin vào khả năng khôi phục khi sự cố. Hệ quả là cluster bị giữ ở phiên bản cũ, thiếu bản vá bảo mật và tiến gần mốc **extended support**.
 
-**Kiến trúc giải pháp bây giờ như sau:**
+AWS giới thiệu tính năng **Kubernetes version rollbacks** trên **Amazon Elastic Kubernetes Service (Amazon EKS)**, cho phép hoàn tác nâng cấp phiên bản Kubernetes trong vòng **bảy ngày** nếu phát sinh sự cố sau khi nâng cấp, đưa cluster về trạng thái hoạt động trước đó.
 
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+#### 3. Nội dung chính
 
----
+**3.1. Cơ chế rollback**
 
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
+Khác với emulated versions (giữ cluster ở trạng thái chuyển tiếp), EKS version rollback đưa cluster về **phiên bản đã được xác thực đầy đủ và từng chạy production**, không phải bản mô phỏng. Ví dụ trong bài viết: nâng cấp từ Kubernetes **1.34** lên **1.35**, nếu phát hiện lỗi tương thích có thể rollback về **1.34** trong bảy ngày mà không cần dựng lại cluster.
 
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
+Việc rollback được thực hiện **một minor version mỗi lần**, cùng cách tiếp cận tăng dần như khi nâng cấp trên EKS. Trước khi thực hiện, EKS tự đánh giá mức sẵn sàng thông qua **cluster insights**, cảnh báo các hạng mục như tương thích phiên bản node hoặc phụ thuộc add-on. Trường hợp đã tự đánh giá rủi ro và cần thao tác nhanh, có thể dùng cờ `--force` để bỏ qua các kiểm tra đó.
 
----
+Cơ chế trên áp dụng cho **mọi cluster EKS**, bất kể node do khách hàng tự quản lý hay do AWS quản lý.
 
-## Lựa chọn công nghệ và phạm vi giao tiếp
+![Tùy chọn rollback trên Amazon EKS console](/images/3-BlogsTranslated/3.1-Blog1/figure-1.png)
 
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+**3.2. Rollback trên EKS Auto Mode**
 
----
+**EKS Auto Mode** tự động hóa quản lý compute, networking và storage. Với Auto Mode, **control plane và managed nodes phải được rollback đồng bộ**. Quá trình rollback node tuân thủ **pod disruption budgets**, nên thời gian phụ thuộc cấu hình.
 
-## The pub/sub hub
+AWS cung cấp **cancel API** để dừng rollback node tại bất kỳ thời điểm nào, phục vụ trường hợp cần điều chỉnh disruption budgets hoặc thay đổi hướng xử lý. Mặc định, EKS **không bỏ qua** disruption budgets trong quá trình rollback nhằm ưu tiên ổn định workload; người quản trị có thể tự chỉnh sửa hoặc gỡ budgets nếu cần tăng tốc.
 
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
+![Thông tin cửa sổ rollback trên console](/images/3-BlogsTranslated/3.1-Blog1/figure-2.png)
 
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
+**3.3. Quy trình thực hiện trên console**
 
----
+Theo bài viết, quy trình gồm các bước: chọn cluster đã nâng cấp gần đây trên Amazon EKS console; khởi tạo version rollback và kiểm tra **rollback window** còn hiệu lực; rà soát rollback insights (trạng thái node và các cảnh báo cần xử lý); xác nhận thực hiện. Trong quá trình rollback, cluster vẫn duy trì hoạt động. Thời gian rollback control plane khoảng **20 phút**, tương đương một lần nâng cấp thông thường. Với cluster Auto Mode, node được rollback theo cấu hình disruption budget.
 
-## Core microservice
+![Rollback insights trước khi thực hiện](/images/3-BlogsTranslated/3.1-Blog1/figure-3.png)
 
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
+![Quá trình rollback đang diễn ra](/images/3-BlogsTranslated/3.1-Blog1/figure-4.png)
 
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
+**3.4. Phạm vi áp dụng và chi phí**
 
----
+Tính năng được cung cấp **không phát sinh chi phí bổ sung** tại **tất cả Region thương mại** có Amazon EKS. Người dùng chỉ trả chi phí EKS và compute thông thường.
 
-## Front door microservice
+| Hạng mục | Phạm vi |
+|---|---|
+| Rollback control plane | Mọi cluster EKS |
+| Rollback node | Cluster chạy **EKS Auto Mode** |
+| Phiên bản hỗ trợ | Kubernetes trong **standard support** và **extended support** |
 
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
+#### 4. Nhận xét
 
----
+Nội dung bài viết làm rõ một vấn đề thực tiễn trong vận hành Kubernetes: nâng cấp control plane vốn khó đảo ngược, nên nhiều tổ chức trì hoãn cập nhật và chấp nhận rủi ro bảo mật cũng như chi phí extended support. Việc Amazon EKS cung cấp rollback trong bảy ngày thay đổi cách tiếp cận quản trị phiên bản, vì quản trị viên có “lưới an toàn” rõ ràng thay vì phải dựng lại cluster khi sự cố xảy ra.
 
-## Staging ER7 microservice
+Về mặt kỹ thuật, điểm đáng chú ý là rollback đưa cluster về phiên bản production đã được xác thực, khác với hướng emulated versions chỉ giữ trạng thái chuyển tiếp. Cơ chế đánh giá qua cluster insights và tùy chọn `--force` thể hiện sự cân bằng giữa an toàn mặc định và linh hoạt vận hành. Với EKS Auto Mode, việc rollback đồng bộ control plane và node, đồng thời tôn trọng pod disruption budgets, cho thấy AWS ưu tiên ổn định workload hơn tốc độ hoàn tất thao tác.
 
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
-
----
-
-## Tính năng mới trong giải pháp
-
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Từ góc độ học tập và vận hành thực tế, bài viết hữu ích khi xây dựng quy trình nâng cấp có kiểm soát: cần xác định cửa sổ rollback, rà soát readiness trước khi thực hiện, và chuẩn bị phương án điều chỉnh disruption budgets nếu dùng Auto Mode. Tính năng này đặc biệt phù hợp môi trường yêu cầu tính sẵn sàng cao, có quy định tuân thủ, hoặc quản lý nhiều cluster nơi việc trì hoãn nâng cấp từng là lựa chọn phổ biến.

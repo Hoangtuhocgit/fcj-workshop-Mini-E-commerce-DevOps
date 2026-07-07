@@ -5,28 +5,68 @@ weight : 6
 chapter : false
 pre : " <b> 5.6. </b> "
 ---
-Congratulations on completing this workshop! 
-In this workshop, you learned architecture patterns for accessing Amazon S3 without using the Public Internet. 
-+ By creating a gateway endpoint, you enabled direct communication between EC2 resources and Amazon S3, without traversing an Internet Gateway. 
-+ By creating an interface endpoint you extended S3 connectivity to resources running in your on-premises data center via AWS Site-to-Site VPN or Direct Connect. 
 
-#### clean up
-1. Navigate to Hosted Zones on the left side of Route 53 console. Click the name of *s3.us-east-1.amazonaws.com* zone. Click Delete and confirm deletion by typing delete. 
+#### Resource teardown objective
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+The AWS environment for this project is designed to be temporary: provisioned for testing or demos, then torn down to avoid ongoing charges. Cleanup is therefore an important part of the operational workflow—not merely a final optional step.
 
-2. Disassociate the Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
+#### Summary of deployed workflow
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+Before teardown, the workshop completed:
 
-4. Open the CloudFormation console  and delete the two CloudFormation Stacks that you created for this lab:
-+ PLOnpremSetup
-+ PLCloudSetup
++ Running the microservices stack with Docker Compose.
++ Creating AWS infrastructure with Terraform.
++ Installing AWS Load Balancer Controller, External Secrets Operator, Argo CD, and monitoring.
++ Syncing the application to EKS via GitOps.
++ Exposing the frontend through ALB.
++ Setting up observability with Prometheus, Grafana, and CloudWatch.
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
+![terraform destroy results (live capture)](/images/5-Workshop/5.6-Cleanup/terraform-destroy-live.png)
 
-5. Delete S3 buckets
-+ Open S3 console
-+ Choose the bucket we created for the lab, click and confirm empty. Click delete and confirm delete.
+#### Tear down AWS infrastructure
 
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)
+~~~powershell
+cd infra/environments/aws
+terraform destroy
+~~~
+
+Before confirming destroy, verify the correct AWS account, region, and environment directory. Resources that may be deleted include the EKS cluster, RDS instance, ALB, NAT Gateway, and related resources.
+
+{{% notice warning %}}
+EKS, RDS, NAT Gateway, and ALB can all incur charges. After the demo, tear down resources to avoid prolonged costs.
+{{% /notice %}}
+
+#### Post-destroy verification
+
+- [ ] <code>aws eks list-clusters --region ap-southeast-1</code> shows no demo cluster.
+- [ ] RDS instance has been deleted.
+- [ ] Load Balancer has been removed.
+- [ ] NAT Gateway no longer exists.
+- [ ] Local Docker Compose has been stopped if no longer needed.
+
+#### Note on remote state
+
+The S3 bucket and DynamoDB table used for Terraform remote state are created in a separate bootstrap step. These resources can be retained for future deployments rather than deleted with the application environment.
+
+#### Tear down local environment
+
+~~~powershell
+cd <repo-root>
+docker compose down -v
+~~~
+
+The <code>-v</code> flag also removes volumes, so the next run starts from a clean state.
+
+#### Reference documentation
+
+| Document | Path |
+|----------|------|
+| AWS provisioning guide | <code>docs/runbooks/aws-up.md</code> |
+| AWS teardown guide | <code>docs/runbooks/aws-down.md</code> |
+| Demo checklist | <code>docs/runbooks/demo-checklist.md</code> |
+| System architecture | <code>docs/architecture.md</code> |
+| GitHub Actions setup | <code>docs/runbooks/github-actions-setup.md</code> |
+
+#### Conclusion
+
+Resource teardown helps control costs and demonstrates that the project infrastructure can be managed end-to-end with Infrastructure as Code.

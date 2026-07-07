@@ -1,126 +1,70 @@
 ---
-title: "Blog 2"
-date: 2024-01-01
-weight: 1
+title: "CloudFormation Express mode"
+date: 2026-06-30
+weight: 2
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# AWS CloudFormation Express mode
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Accelerate your infrastructure deployments by up to 4x with AWS CloudFormation Express mode |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/accelerate-your-infrastructure-deployments-by-up-to-4x-with-aws-cloudformation-express-mode/) |
+| Topic | AWS CloudFormation, infrastructure deployment, development iteration |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.2-Blog2/hero.jpg)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+**CloudFormation Express mode** completes deployments when resource configuration is applied, rather than after extended stabilization checks. Deployment time may be reduced by up to **4 times** for iterative development workflows and suitable production scenarios.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+#### 3. Main content
 
-**The solution architecture is now as follows:**
+**3.1. Operating principle**
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+Express mode targets two primary use cases: iterative development workflows and production scenarios that accept eventual stabilization, including AI-assisted infrastructure development with sub-minute feedback loops.
 
----
+With Express mode:
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+- Deployments complete when configuration has been applied, without waiting for stabilization checks.
+- Resources continue becoming operational in the background.
+- CloudFormation automatically retries dependent resources that encounter transient failures within the same stack.
+- The change is **when** deployment completes, not **how** resources are provisioned.
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+| Operation | Standard mode | Express mode |
+|---|---|---|
+| Create SQS queue with DLQ | about 64 seconds | up to about 10 seconds |
+| Delete Lambda with network interface attachment | about 20–30 minutes | up to about 10 seconds |
 
----
+**3.2. Activation**
 
-## Technology Choices and Communication Scope
+Enable Express mode in the console under stack deployment options, or via AWS CLI, SDKs, CDK, and AI tools such as **Kiro**. Set `--deployment-config` to `EXPRESS` for **create**, **update**, or **delete**. **No template changes are required**. Rollback is disabled by default; set `disableRollback` to `false` for production if needed.
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+![Enable Express mode in the CloudFormation console](/images/3-BlogsTranslated/3.2-Blog2/figure-1.jpg)
 
----
+```bash
+aws cloudformation create-stack \
+   --stack-name my-app \
+   --template-body file://template.yaml \
+   --deployment-config '{"mode": "EXPRESS", "disableRollback": true}'
+```
 
-## The Pub/Sub Hub
+CDK users can run `cdk deploy --express`. Express mode works with existing templates, change sets, and nested stacks. Enabling Express mode on a **parent stack** applies it to **all nested stacks**.
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+The article also illustrates incremental infrastructure development, such as building an IAM role, Lambda function, SQS queue, and event source mapping in stages. IAM templates should still follow the **least privilege** principle. If a workload must be fully operational before traffic shift or testing, the default mode with stabilization checks remains the safer choice.
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+**3.3. Availability**
 
----
+Available in **all commercial AWS Regions** at **no additional cost**. The article also points readers to AWS Capabilities by Region, CloudFormation documentation, and the AWS MCP Server for Region availability and related documentation lookup.
 
-## Core Microservice
+#### 4. Remarks
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+The article highlights a core trade-off in CloudFormation deployments: stabilization checks improve confidence that resources can serve traffic, but they slow development feedback. Express mode separates “configuration applied” from “fully stabilized,” which benefits developers and AI tools iterating on infrastructure.
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+The timing examples show the largest gains for operations that normally wait a long time on stabilization. Disabling rollback by default also means production use requires deliberate monitoring and failure handling. Parent-stack inheritance to nested stacks is another operational detail that must be considered in multi-stack designs.
 
----
-
-## Front Door Microservice
-
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
-
----
-
-## Staging ER7 Microservice
-
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+In practice, Express mode fits development, component testing, and production changes that accept eventual stabilization. Changes that shift traffic or depend on full readiness should still use the default mode. The article therefore guides mode selection by risk, not only by speed.

@@ -1,126 +1,90 @@
 ---
-title: "Blog 4"
-date: 2024-01-01
-weight: 1
+title: "Lambda MicroVMs"
+date: 2026-06-22
+weight: 4
 chapter: false
 pre: " <b> 3.4. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# AWS Lambda MicroVMs
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Run isolated sandboxes with full lifecycle control: AWS Lambda introduces MicroVMs |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/) |
+| Topic | AWS Lambda, isolated execution environments, Firecracker |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.4-Blog4/hero.jpeg)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+**Lambda MicroVMs** provide isolated, stateful execution environments for user- or AI-generated code, with VM-level isolation, near-instant launch and resume, and lifecycle control. They are powered by **Firecracker**, the same technology behind more than **15 trillion** monthly Lambda function invocations.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+#### 3. Main content
 
-**The solution architecture is now as follows:**
+**3.1. Context**
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+Use cases include AI coding assistants, interactive code environments, analytics platforms, vulnerability scanners, and **game servers** running user-supplied scripts.
 
----
+| Approach | Advantages | Limitations |
+|---|---|---|
+| Traditional VMs | Strong isolation | Startup time measured in minutes |
+| Containers | Startup in seconds | Shared kernel; more hardening needed for untrusted code |
+| Classic request-response FaaS | Suited to event workloads | Not optimized for long interactive sessions with retained state |
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+**3.2. Usage flow**
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+Create a MicroVM Image from a Dockerfile and code artifact in Amazon S3 (example base image: `public.ecr.aws/lambda/microvms:al2023-minimal`). Build logs stream to CloudWatch under `/aws/lambda/microvms/`.
 
----
+Example image creation command:
 
-## Technology Choices and Communication Scope
+```bash
+aws lambda-microvms create-microvm-image \
+  --code-artifact uri=<path/to/s3/artifact.zip> --name <VM_image_name> \
+  --base-image-arn arn:aws:lambda:us-east-1:aws:microvm-image:al2023-1 \
+  --build-role-arn <IAM role ARN>
+```
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+![Create MicroVM Image](/images/3-BlogsTranslated/3.4-Blog4/figure-1.png)
 
----
+Run with an idle policy (article example: suspend after **15 minutes** with `maxIdleDurationSeconds: 900`, `suspendedDurationSeconds: 300`, and `autoResumeEnabled: true`).
 
-## The Pub/Sub Hub
+```bash
+aws lambda-microvms run-microvm \
+  --image-identifier arn:aws:lambda:<region>:<acct>:microvm-image:my-image \
+  --execution-role-arn arn:aws:iam::<acct>:role/MicroVMExecutionRole \
+  --idle-policy '{"maxIdleDurationSeconds":900,"suspendedDurationSeconds":300,"autoResumeEnabled":true}'
+```
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+**No manual networking setup** is required. Lambda assigns a unique ID and dedicated endpoint URL. Traffic uses a short-lived token in the **`X-aws-proxy-auth`** header. When the idle threshold is exceeded, the MicroVM is suspended and its memory/disk snapshot is retained; the next request can resume the application state.
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+![Run MicroVM](/images/3-BlogsTranslated/3.4-Blog4/figure-2.png)
 
----
+**3.3. Core capabilities**
 
-## Core Microservice
+1. VM-level isolation with no shared kernel between users  
+2. Image-then-launch from pre-initialized Firecracker snapshots  
+3. Stateful execution for up to **8 hours** total runtime, with suspend/resume  
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+Applications that generate unique content or establish network connections during initialization may need service-provided hooks for compatibility. Lambda Functions remain appropriate for event-driven request-response workloads; MicroVMs complement them for untrusted code isolation.
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+**3.4. Availability**
 
----
+| Item | Details |
+|---|---|
+| Regions | US East (N. Virginia, Ohio), US West (Oregon), Europe (Ireland), Asia Pacific (Tokyo) |
+| Architecture | **ARM64** |
+| Limits per MicroVM | 16 vCPUs, 32 GB memory, 32 GB disk |
+| Suspend | Explicit API or automatic lifecycle policy |
 
-## Front Door Microservice
+Pricing details are listed on the AWS Lambda pricing page.
 
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
+#### 4. Remarks
 
----
+The article expands AWS Lambda from event-driven functions to session-oriented execution for a growing need: running user- or AI-generated code in isolation. Traditional choices among VMs, containers, and FaaS force trade-offs among isolation, startup time, and state retention. MicroVMs combine these properties on Firecracker at Lambda scale.
 
-## Staging ER7 Microservice
+Architecturally, image-then-launch plus suspend/resume reduces idle cost while preserving session memory, disk, and processes. Details such as idle policies, the `X-aws-proxy-auth` header, and initialization-hook guidance show a product aimed at real multi-tenant systems. The separate API surface also emphasizes complementarity: Functions handle event flows, while MicroVMs isolate untrusted code.
 
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+For learning and system design, the article is relevant to AI coding assistants, interactive runtimes, vulnerability scanning, and platforms that execute user scripts. Evaluation should include Region and ARM64 limits, the eight-hour runtime cap, suspend policy, and Lambda pricing.

@@ -1,126 +1,67 @@
 ---
-title: "Blog 1"
-date: 2024-01-01
+title: "EKS version rollbacks"
+date: 2026-07-01
 weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# Amazon EKS Kubernetes version rollbacks
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Upgrade Amazon EKS clusters with confidence using Kubernetes version rollbacks |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/upgrade-amazon-eks-clusters-with-confidence-using-kubernetes-version-rollbacks/) |
+| Topic | Amazon EKS, Kubernetes upgrades, version rollback |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.1-Blog1/hero.png)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+Open-source Kubernetes does not support control-plane rollback. Although the community is progressing with emulated versions under **KEP-4330**, organizations often rely on bake periods, stagger groups, automated sign-offs, and long upgrade cycles. With **three minor releases per year**, teams managing many clusters—especially in regulated environments—may delay upgrades and approach **extended support**.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+Amazon EKS introduces **Kubernetes version rollbacks**, allowing an upgrade to be reversed within **seven days** if issues occur.
 
-**The solution architecture is now as follows:**
+#### 3. Main content
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+**3.1. Rollback mechanism**
 
----
+Unlike emulated versions, EKS rollback restores a fully validated previous production version. Example in the article: upgrade from Kubernetes **1.34** to **1.35**, then roll back to **1.34** within seven days without rebuilding the cluster.
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+Rollbacks proceed **one minor version at a time**. **Cluster insights** evaluate readiness (node version compatibility, add-on dependencies). The `--force` flag can bypass checks. The mechanism applies to **all EKS clusters**, whether nodes are customer-managed or AWS-managed.
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+![Rollback option in the EKS console](/images/3-BlogsTranslated/3.1-Blog1/figure-1.png)
 
----
+**3.2. EKS Auto Mode**
 
-## Technology Choices and Communication Scope
+For Auto Mode, the **control plane and managed nodes roll back together**. Node rollbacks respect **pod disruption budgets**. A **cancel API** can stop node rollback at any time. By default, EKS never bypasses disruption budgets.
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+![Rollback window information](/images/3-BlogsTranslated/3.1-Blog1/figure-2.png)
 
----
+**3.3. Console procedure**
 
-## The Pub/Sub Hub
+Select a recently upgraded cluster, review the rollback window and insights, then confirm. The cluster remains functional. Control-plane rollback takes about **20 minutes**.
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+![Rollback insights](/images/3-BlogsTranslated/3.1-Blog1/figure-3.png)
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+![Rollback in progress](/images/3-BlogsTranslated/3.1-Blog1/figure-4.png)
 
----
+**3.4. Availability and cost**
 
-## Core Microservice
+Available at **no additional cost** in **all commercial Regions** where EKS is offered.
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+| Item | Scope |
+|---|---|
+| Control-plane rollback | All EKS clusters |
+| Node rollback | Clusters running **EKS Auto Mode** |
+| Supported versions | Kubernetes in **standard support** and **extended support** |
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+#### 4. Remarks
 
----
+The article addresses a practical operations problem: control-plane upgrades are hard to reverse, so organizations often delay updates and accept security and extended-support risk. EKS version rollbacks provide a clear safety net within seven days, reducing the need to rebuild a cluster after a failed upgrade.
 
-## Front Door Microservice
+Technically, rollback restores a fully validated production version rather than an emulated transitional state. Cluster insights and the `--force` option balance default safety with operational flexibility. For Auto Mode, coordinated control-plane and node rollback with respect for pod disruption budgets shows that workload stability is prioritized over speed.
 
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
-
----
-
-## Staging ER7 Microservice
-
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+For learning and real operations, the article is useful when designing controlled upgrade procedures: define the rollback window, review readiness, and prepare disruption-budget adjustments for Auto Mode. The feature is especially relevant to high-availability, regulated, or multi-cluster environments where upgrade delays were previously common.

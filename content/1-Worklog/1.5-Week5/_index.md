@@ -1,57 +1,37 @@
 ---
 title: "Week 5 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-05-18
+weight: 5
 chapter: false
 pre: " <b> 1.5. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 5 objectives:
 
-### Week 5 Objectives:
+* Review Week 4 topics: Amazon Lightsail, EC2 Auto Scaling, Elastic Load Balancer, Amazon CloudWatch, and Amazon Route 53.
+* Learn AWS Support, Trusted Advisor, and operational documentation resources.
+* Practice AWS CLI on EC2; understand highly available web application architecture and the Highly Available Web Application workshop.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **May 18–24, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 4 content on Amazon Lightsail, EC2 Auto Scaling, Elastic Load Balancer, Amazon CloudWatch, and Amazon Route 53. | May 18, 2026 | May 18, 2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
+| 3 | **AWS Support and operational tooling:** <br>&emsp; + Understand AWS Support plans and the role of the Support Center. <br>&emsp; + Explore AWS Trusted Advisor for cost, security, performance, fault tolerance, and service limit checks. <br>&emsp; + Use AWS Documentation and AWS re:Post to troubleshoot issues, follow deployment guides, and learn from community experience. | May 19, 2026 | May 20, 2026 | <https://000009.awsstudygroup.com/> |
+| 4 | **AWS CLI on EC2 (Windows/Ubuntu):** <br>&emsp; + Install, verify, and configure AWS CLI on an EC2 server environment. <br>&emsp; + Run basic CLI commands to inspect resources such as EC2, S3, IAM, and CloudWatch. <br>&emsp; + Use IAM Roles for EC2 so CLI operations stay secure without storing Access Keys on the instance. | May 20, 2026 | May 21, 2026 | <https://000011.awsstudygroup.com/> |
+| 5 | **Highly available web application model:** <br>&emsp; + Understand architecture with VPC, public/private subnets, security groups, EC2, load balancers, and Auto Scaling Groups. <br>&emsp; + Learn how Elastic Load Balancer distributes traffic across multiple EC2 instances. <br>&emsp; + Learn how Auto Scaling Groups scale EC2 capacity up or down based on system load. | May 21, 2026 | May 22, 2026 | <https://000101.awsstudygroup.com/> |
+| 6 | **Highly Available Web Application Workshop (introductory):** <br>&emsp; + Create or review VPC, subnets, route tables, and security groups for a web application. <br>&emsp; + Create a Launch Template, Auto Scaling Group, and Application Load Balancer. <br>&emsp; + Verify web access through the load balancer DNS; observe instance status, target group health checks, and load distribution. <br> **Cleanup:** Remove lab resources—EC2 instances, load balancers, target groups, Auto Scaling Groups, launch templates, CloudWatch alarms, and related assets—to limit unexpected charges. | May 22, 2026 | May 24, 2026 | <https://000101.awsstudygroup.com/> |
 
-### Week 5 Achievements:
+### Week 5 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understands the role of AWS Support, Trusted Advisor, and documentation resources during learning and day-to-day AWS operations.
 
-* Successfully created and configured an AWS Free Tier account.
+* Can use AWS CLI on EC2 (Windows/Ubuntu) to inspect and manage basic resources.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* Understands the highly available web application deployment model on AWS.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* Knows how to combine load balancing and Auto Scaling to improve fault tolerance, scale the system, and optimize operations.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Is mindful of monitoring and cleaning up resources to avoid unnecessary costs.

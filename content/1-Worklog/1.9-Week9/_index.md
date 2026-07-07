@@ -1,57 +1,33 @@
 ---
 title: "Week 9 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-06-15
+weight: 9
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 9 objectives:
 
-### Week 9 Objectives:
+* Review Week 8 topics: security, reliability, performance, and cost optimization on AWS.
+* Learn the application modernization path from monolith to microservices and serverless.
+* Understand CI/CD, microservice decomposition, database-per-service, messaging/eventing, and container services on AWS.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **June 15–21, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 8 content on security, reliability, performance, and cost optimization on AWS. <br> **Application modernization overview:** <br>&emsp; + Understand goals for moving from monolith to microservices, separating bounded contexts, and reducing dependencies. <br>&emsp; + Learn how to host applications on AWS and prepare automated release workflows. | June 15, 2026 | June 15, 2026 | <https://cloudjourney.awsstudygroup.com/4-modernize/> |
+| 3 | **Monolith application migration:** <br>&emsp; + Analyze a Java Spring Boot/RDBMS application, identifying frontend, backend, database, and dependency points. <br>&emsp; + Learn the steps to move the application to AWS, configure the runtime environment, and verify connectivity after migration. | June 16, 2026 | June 17, 2026 | <https://000050.awsstudygroup.com/> |
+| 4 | **Automated application release and microservice creation:** <br>&emsp; + Understand CI/CD pipelines, source/build/deploy stages, and post-deployment testing. <br>&emsp; + Learn how to split monolith functionality into independent microservices with separate APIs and data stores. <br> **Data restructuring, workflow, messaging, and eventing:** <br>&emsp; + Recognize shared-database issues, database-per-service approaches, and asynchronous communication with SQS/SNS or event-driven patterns. | June 17, 2026 | June 18, 2026 | <https://000051.awsstudygroup.com/><br><https://000052.awsstudygroup.com/><br><https://000053.awsstudygroup.com/><br><https://000054.awsstudygroup.com/> |
+| 5 | **Application authentication and serverless:** <br>&emsp; + Explore SPAs, Amazon Cognito, API Gateway, Lambda, Step Functions, S3, DynamoDB, SAM, CloudWatch, and X-Ray. <br> **Introduction to container services:** <br>&emsp; + Get an overview of Lightsail Container, Amazon EKS, AWS Fargate, and CI/CD on EKS with CodePipeline/GitHub. | June 18, 2026 | June 19, 2026 | <https://000055.awsstudygroup.com/><br><https://000081.awsstudygroup.com/><br><https://000046.awsstudygroup.com/><br><https://000126.awsstudygroup.com/> |
+| 6 | **Summary and cleanup:** <br>&emsp; + Consolidate application modernization knowledge: CI/CD, microservices, separate databases, messaging/eventing, SPAs, Cognito, API Gateway, Lambda, and container services. <br> **Cleanup:** Remove lab resources—demo apps, test databases, API Gateway, Lambda, Cognito, S3, SQS/SNS, EKS/Lightsail Container demos, and pipelines—to limit unexpected charges. | June 19, 2026 | June 21, 2026 | <https://cloudjourney.awsstudygroup.com/4-modernize/> |
 
-### Week 9 Achievements:
+### Week 9 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understands the direction for modernizing applications from monolith to microservices and serverless on AWS.
 
-* Successfully created and configured an AWS Free Tier account.
+* Knows the main components: CI/CD, microservices, separate databases, messaging/eventing, SPAs, Cognito, API Gateway, Lambda, and container services.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Has an overview of ECS/EKS/Fargate and how containers combine with deployment pipelines.

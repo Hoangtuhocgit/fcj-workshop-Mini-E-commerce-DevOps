@@ -1,127 +1,103 @@
 ---
-title: "Blog 3"
-date: 2024-01-01
-weight: 1
+title: "ACM hỗ trợ ACME"
+date: 2026-06-30
+weight: 3
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Hỗ trợ giao thức ACME trên AWS Certificate Manager
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+#### 1. Thông tin nguồn
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+| Hạng mục | Nội dung |
+|---|---|
+| Tiêu đề gốc | Automate public TLS certificate issuance with ACME support in AWS Certificate Manager |
+| Nguồn | [AWS News Blog](https://aws.amazon.com/blogs/aws/automate-public-tls-certificate-issuance-with-acme-support-in-aws-certificate-manager/) |
+| Chủ đề | AWS Certificate Manager, chứng chỉ TLS, giao thức ACME |
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
+![Hình minh họa từ bài viết gốc](/images/3-BlogsTranslated/3.3-Blog3/hero.png)
 
----
+#### 2. Tóm tắt nội dung
 
-## Hướng dẫn kiến trúc
+Bài viết phân tích nhu cầu tự động hóa quản lý chứng chỉ TLS khi thời hạn hiệu lực ngày càng ngắn. Theo định hướng của **CA/Browser Forum**, thời hạn tối đa giảm còn **100 ngày từ tháng 3/2027** và còn **47 ngày vào năm 2029**, khiến gia hạn thủ công không còn khả thi.
 
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
+**ACME** (Automatic Certificate Management Environment) là giao thức mở dùng để yêu cầu, gia hạn và thu hồi chứng chỉ TLS tự động — cùng giao thức đứng sau **Let’s Encrypt**, được hỗ trợ bởi nhiều client như Certbot, cert-manager cho Kubernetes, acme.sh và các client ACMEv2 khác.
 
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
+AWS bổ sung hỗ trợ ACME cho chứng chỉ công khai trên **AWS Certificate Manager (ACM)**. ACM cung cấp **endpoint máy chủ ACME được quản lý đầy đủ**, tương thích ACMEv2. Chứng chỉ TLS công khai được cấp bởi **Amazon Trust Services** thông qua giao thức ACME chuẩn. Có thể thiết lập **một hoặc nhiều** ACME endpoint để quản lý và giám sát tập trung trong tổ chức.
 
-**Kiến trúc giải pháp bây giờ như sau:**
+#### 3. Nội dung chính
 
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+**3.1. Vấn đề trước đây và lợi ích quản trị**
 
----
+Trước đây, tự động hóa theo ACME thường phụ thuộc nhà cung cấp chứng chỉ bên ngoài song song với ACM, dẫn đến chứng chỉ phân tán, thiếu dashboard tập trung và hạn chế khả năng kiểm soát ai được yêu cầu chứng chỉ cũng như domain nào được phép.
 
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
+Với ACME trên ACM, quản trị PKI có thể:
 
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
+- Gắn **IAM roles** với tài khoản ACME để kiểm soát chi tiết domain mà từng client được yêu cầu.
+- Định nghĩa **domain scopes** ở cấp endpoint để áp dụng chính sách toàn tổ chức.
+- Giám sát tập trung: **AWS CloudTrail** ghi nhận mọi yêu cầu chứng chỉ; **Amazon CloudWatch** theo dõi metric vận hành; **ACM** gửi thông báo sắp hết hạn.
+- Tra cứu toàn bộ chứng chỉ trên ACM, bất kể được cấp qua console, API hay ACME.
 
----
+**3.2. Quy trình thiết lập**
 
-## Lựa chọn công nghệ và phạm vi giao tiếp
+Quy trình gồm: tạo ACME endpoint; cấu hình ủy quyền bằng **External Account Binding (EAB)**; xác thực domain ở cấp endpoint; trỏ client ACME tới endpoint.
 
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+Bước xác thực domain có ý nghĩa quan trọng: tách người thiết lập cấp chứng chỉ khỏi người yêu cầu chứng chỉ. Quản trị PKI xác thực domain một lần ở cấp endpoint bằng credential DNS (giữ ở phía admin). Chủ ứng dụng chỉ đăng ký bằng EAB credential; endpoint tự thực thi phạm vi domain được phép. Nhờ đó có thể phân phối tự động hóa rộng mà không phân phối khóa DNS.
 
----
+![Trang quản lý ACME certificates trên console ACM](/images/3-BlogsTranslated/3.3-Blog3/figure-1.png)
 
-## The pub/sub hub
+Khi tạo endpoint cần cấu hình:
 
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
+| Tham số | Nội dung theo bài viết |
+|---|---|
+| Endpoint type | **Public** (client kết nối qua internet công cộng) |
+| Certificate type | **Public** (Amazon Trust Services, được trình duyệt và HĐH tin cậy mặc định) |
+| Certificate key type | Mặc định **ECDSA P-256**; cũng hỗ trợ **RSA 2048** và **ECDSA P-384** |
+| Domain scope | **Exact domain**, **Subdomains**, **Wildcards** (có thể bỏ chọn để chặn loại chứng chỉ tương ứng) |
 
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
+Có thể chọn **Amazon Route 53** hosted zone để ACM tự tạo bản ghi **CNAME** phục vụ DNS validation. Nếu domain không nằm trên Route 53, cần tạo thủ công CNAME do ACM cung cấp tại nhà cung cấp DNS. Đây là điểm khác biệt so với mô hình ACME thông thường, nơi mỗi client tự xử lý xác thực domain.
 
----
+![Tạo ACME endpoint](/images/3-BlogsTranslated/3.3-Blog3/figure-3.png)
 
-## Core microservice
+![Cấu hình domain và phạm vi cấp chứng chỉ](/images/3-BlogsTranslated/3.3-Blog3/figure-5.png)
 
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
+Sau khi endpoint được tạo, console hiển thị **Setup progress**. Domain ở trạng thái Validating theo phương thức DNS validation. Khi dùng Route 53, có thể chọn tạo bản ghi tự động; sau khi thành công, trạng thái chuyển thành Success.
 
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
+![Tiến trình thiết lập endpoint](/images/3-BlogsTranslated/3.3-Blog3/figure-7.png)
 
----
+Tiếp theo, tạo **EAB credentials** gồm **Key ID** và **HMAC key** để client đăng ký tài khoản với máy chủ ACME. Sau khi đăng ký, client tự sinh cặp khóa bất đối xứng để xác thực các yêu cầu chứng chỉ tiếp theo. Có thể đặt thời hạn hết hạn cho credential, nên chỉ đủ dài để hoàn tất đăng ký client.
 
-## Front door microservice
+![Tạo EAB credentials](/images/3-BlogsTranslated/3.3-Blog3/figure-11.png)
 
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
+Console cung cấp lệnh mẫu cho Certbot và acme.sh. Ví dụ với Certbot:
 
----
+```bash
+certbot certonly --standalone --non-interactive --agree-tos \
+    --email <EMAIL> \
+    --server https://acm-acme-enroll.us-east-1.api.aws/<ENDPOINT_ID>/directory \
+    --eab-kid <EAB_KID> \
+    --eab-hmac-key <EAB_HMAC_KEY> \
+    --issuance-timeout <ISSUANCE_TIMEOUT> \
+    -d <DOMAIN>
+```
 
-## Staging ER7 microservice
+![Tham chiếu lệnh CLI trên console](/images/3-BlogsTranslated/3.3-Blog3/figure-19.png)
 
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
+Certbot liên hệ endpoint ACME và nhận chứng chỉ do Amazon Trust Services ký. Bài viết cũng nêu việc dùng `openssl` để xem chứng chỉ trước khi cài đặt. Chứng chỉ xuất hiện trong tab **ACME certificates** trên ACM, cùng với chứng chỉ cấp qua console hoặc API.
 
----
+![Danh sách chứng chỉ ACME trên console](/images/3-BlogsTranslated/3.3-Blog3/figure-21.png)
 
-## Tính năng mới trong giải pháp
+**3.3. Phạm vi áp dụng và chi phí**
 
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Tính năng hiện có tại **tất cả Region thương mại** của AWS; sẽ có sau tại **AWS GovCloud (US)**, **China Regions** và **AWS European Sovereign Cloud**.
+
+Chi phí tính **theo từng domain** trong mỗi chứng chỉ tại thời điểm phát hành, với mức khác nhau giữa **FQDN** và **wildcard**. Các bậc khối lượng được tính theo **tổng số lần xuất hiện domain** trên mọi chứng chỉ phát hành trong tháng của tài khoản AWS.
+
+#### 4. Nhận xét
+
+Bài viết phản ánh xu hướng bắt buộc phải tự động hóa vòng đời chứng chỉ TLS khi thời hạn hiệu lực ngày càng ngắn theo định hướng của CA/Browser Forum. Việc ACM hỗ trợ ACME giúp tổ chức dùng lại hệ sinh thái client sẵn có (Certbot, cert-manager, acme.sh) thay vì phụ thuộc quy trình riêng biệt, đồng thời vẫn giữ chứng chỉ trong một hệ thống quản trị tập trung trên AWS.
+
+Điểm kỹ thuật đáng chú ý là mô hình tách vai trò: quản trị PKI xác thực domain và kiểm soát scope ở cấp endpoint, còn chủ ứng dụng chỉ dùng EAB credential để yêu cầu chứng chỉ. Cách tiếp cận này giảm rủi ro phân tán credential DNS và tăng khả năng áp dụng chính sách thống nhất (exact domain, subdomain, wildcard). Việc giám sát qua CloudTrail, CloudWatch và thông báo hết hạn trên ACM cũng hỗ trợ kiểm toán và vận hành lâu dài tốt hơn so với mô hình chứng chỉ nằm rải rác ở nhiều CA.
+
+Đối với hệ thống có nhiều dịch vụ, nhiều môi trường hoặc triển khai trên Kubernetes, bài viết cung cấp hướng tham chiếu rõ ràng để chuẩn hóa cấp phát HTTPS. Khi áp dụng, cần cân nhắc cấu hình scope phù hợp mức độ bảo mật, quản lý vòng đời EAB credential, và theo dõi chi phí theo domain/FQDN/wildcard. Nội dung này đặc biệt hữu ích khi thiết kế nền tảng cần chứng chỉ công khai tin cậy trình duyệt mà vẫn kiểm soát được quyền và phạm vi cấp phát.

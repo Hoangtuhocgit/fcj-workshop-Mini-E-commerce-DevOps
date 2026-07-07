@@ -1,59 +1,33 @@
 ---
 title: "Worklog Tuần 8"
-date: 2024-01-01
-weight: 1
+date: 2026-06-08
+weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
 
 ### Mục tiêu tuần 8:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Ôn tập nội dung tuần 7 về tối ưu hệ thống, tự động hóa vận hành, CloudWatch/Grafana, Tag, Systems Manager và CloudFormation.
+* Tìm hiểu các nhóm tối ưu trên AWS: bảo mật, độ tin cậy, hiệu năng và chi phí.
+* Nắm IAM Identity Center, Security Hub, WAF, KMS, AWS Backup, VPC Peering, Transit Gateway, ECS, CodePipeline và công cụ phân tích chi phí.
+
+### Khung thời gian tuần: **08/06/2026 – 14/06/2026**
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 2 | Ôn tập nội dung tuần 7 về tối ưu hệ thống, tự động hóa vận hành, CloudWatch/Grafana, Tag, Systems Manager và CloudFormation. <br> **Nhóm bảo mật trong lộ trình Tối ưu hệ thống:** <br>&emsp; + Tìm hiểu AWS IAM Identity Center/SSO, IAM Permission Boundary và giới hạn chuyển Role bằng Condition. <br>&emsp; + Tìm hiểu AWS Security Hub, AWS WAF và AWS KMS để đánh giá bảo mật, bảo vệ ứng dụng/API và quản lý khóa mã hóa. | 08/06/2026 | 09/06/2026 | <https://000012.awsstudygroup.com/><br><https://000030.awsstudygroup.com/><br><https://000018.awsstudygroup.com/><br><https://000026.awsstudygroup.com/><br><https://000033.awsstudygroup.com/> |
+| 3 | **Nhóm độ tin cậy:** <br>&emsp; + Nắm vai trò AWS Backup trong lập kế hoạch sao lưu, backup vault, backup plan và kiểm tra khôi phục. <br>&emsp; + Tìm hiểu VPC Peering và Transit Gateway để kết nối nhiều VPC, quản lý mạng tập trung và hỗ trợ mở rộng hệ thống. | 09/06/2026 | 10/06/2026 | <https://000013.awsstudygroup.com/><br><https://000019.awsstudygroup.com/><br><https://000020.awsstudygroup.com/> |
+| 4 | **Nhóm hiệu năng và triển khai ứng dụng:** <br>&emsp; + Ôn lại Docker, container image, Dockerfile và quy trình đóng gói ứng dụng. <br>&emsp; + Tìm hiểu triển khai ứng dụng lên Amazon ECS và tự động hóa deploy với AWS CodePipeline. <br>&emsp; + Tìm hiểu File Storage Gateway, Amazon FSx, Data Lake và DynamoDB nâng cao ở mức tổng quan. | 10/06/2026 | 11/06/2026 | <https://000015.awsstudygroup.com/><br><https://000016.awsstudygroup.com/><br><https://000017.awsstudygroup.com/><br><https://000024.awsstudygroup.com/><br><https://000025.awsstudygroup.com/> |
+| 5 | **Nhóm tối ưu chi phí:** <br>&emsp; + Nắm Savings Plans, Reserved Instance/Reserved DB Instance, EC2 Resource Optimization và trực quan hóa chi phí. <br>&emsp; + Tìm hiểu phân tích chi phí nâng cao với AWS Glue và Amazon Athena. | 11/06/2026 | 12/06/2026 | <https://000042.awsstudygroup.com/><br><https://000040.awsstudygroup.com/> |
+| 6 | **Tổng hợp và dọn dẹp:** <br>&emsp; + Liên hệ các nhóm tối ưu bảo mật, độ tin cậy, hiệu năng và chi phí với vận hành thực tế sau khi triển khai hoặc migration workload lên AWS. <br> **Dọn dẹp:** Dọn dẹp các tài nguyên thực hành như cấu hình bảo mật thử nghiệm, backup plan, kết nối mạng, ECS/CodePipeline demo và dashboard chi phí để hạn chế phát sinh chi phí. | 12/06/2026 | 14/06/2026 | <https://cloudjourney.awsstudygroup.com/3-optimize/> |
 
 ### Kết quả đạt được tuần 8:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Hiểu các nhóm tối ưu quan trọng trên AWS gồm bảo mật, độ tin cậy, hiệu năng và chi phí.
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+* Nắm vai trò của Security Hub, WAF, KMS, AWS Backup, VPC Peering, Transit Gateway, ECS, CodePipeline và công cụ phân tích chi phí.
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Có khả năng liên hệ kiến thức tối ưu hệ thống với vận hành thực tế sau khi triển khai hoặc migration workload lên AWS.

@@ -1,37 +1,72 @@
 ---
-title : "Dọn dẹp tài nguyên"
+title : "Thu hồi tài nguyên"
 date : 2024-01-01
 weight : 6
 chapter : false
 pre : " <b> 5.6. </b> "
 ---
 
-#### Dọn dẹp tài nguyên
+#### Mục tiêu thu hồi tài nguyên
 
-Xin chúc mừng bạn đã hoàn thành xong lab này!
-Trong lab này, bạn đã học về các mô hình kiến trúc để truy cập Amazon S3 mà không sử dụng Public Internet.
+Môi trường AWS của đề tài được thiết kế theo hướng tạm thời: dựng lên khi cần kiểm thử hoặc demo, sau đó thu hồi để tránh phát sinh chi phí. Vì vậy, bước cleanup là một phần quan trọng của quy trình vận hành, không phải chỉ là thao tác phụ sau cùng.
 
-+ Bằng cách tạo Gateway endpoint, bạn đã cho phép giao tiếp trực tiếp giữa các tài nguyên EC2 và Amazon S3, mà không đi qua Internet Gateway.
-Bằng cách tạo Interface endpoint, bạn đã mở rộng kết nối S3 đến các tài nguyên chạy trên trung tâm dữ liệu trên chỗ của bạn thông qua AWS Site-to-Site VPN hoặc Direct Connect.
+#### Tổng kết quy trình đã triển khai
 
-#### Dọn dẹp
-1. Điều hướng đến Hosted Zones trên phía trái của bảng điều khiển Route 53. Nhấp vào tên của  s3.us-east-1.amazonaws.com zone. Nhấp vào Delete và xác nhận việc xóa bằng cách nhập từ khóa "delete".
+Trước khi thu hồi, workshop đã hoàn tất các nội dung:
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
++ Chạy stack microservices bằng Docker Compose.
++ Tạo hạ tầng AWS bằng Terraform.
++ Cài AWS Load Balancer Controller, External Secrets Operator, Argo CD và monitoring.
++ Đồng bộ ứng dụng lên EKS bằng GitOps.
++ Công bố frontend qua ALB.
++ Thiết lập quan sát bằng Prometheus, Grafana và CloudWatch.
 
-2. Disassociate Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
+![Kết quả terraform destroy (chụp thực tế)](/images/5-Workshop/5.6-Cleanup/terraform-destroy-live.png)
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+#### Thu hồi hạ tầng AWS
 
-4.Mở console của CloudFormation và xóa hai stack CloudFormation mà bạn đã tạo cho bài thực hành này:
-+ PLOnpremSetup
-+ PLCloudSetup
+~~~powershell
+cd infra/environments/aws
+terraform destroy
+~~~
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
+Trước khi xác nhận destroy, cần kiểm tra đúng AWS account, đúng region và đúng thư mục môi trường. Các tài nguyên có thể bị xóa gồm EKS cluster, RDS instance, ALB, NAT Gateway và các tài nguyên liên quan.
 
-5. Xóa các S3 bucket
+{{% notice warning %}}
+EKS, RDS, NAT Gateway và ALB đều có thể phát sinh chi phí. Sau khi demo xong, cần thu hồi tài nguyên để tránh chi phí kéo dài.
+{{% /notice %}}
 
-+ Mở bảng điều khiển S3
-+ Chọn bucket chúng ta đã tạo cho lab, nhấp chuột và xác nhận là empty. Nhấp Delete và xác nhận delete.
-+ 
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)
+#### Kiểm tra sau khi destroy
+
+- [ ] <code>aws eks list-clusters --region ap-southeast-1</code> không còn cluster demo.
+- [ ] RDS instance đã được xóa.
+- [ ] Load Balancer đã được thu hồi.
+- [ ] NAT Gateway không còn tồn tại.
+- [ ] Docker Compose local đã được dừng nếu không dùng nữa.
+
+#### Lưu ý về remote state
+
+S3 bucket và DynamoDB table dùng cho Terraform remote state được tạo ở bước bootstrap riêng. Các tài nguyên này có thể được giữ lại để phục vụ lần triển khai sau, thay vì xóa cùng môi trường ứng dụng.
+
+#### Thu hồi môi trường local
+
+~~~powershell
+cd <repo-root>
+docker compose down -v
+~~~
+
+Tùy chọn <code>-v</code> xóa cả volume, giúp lần chạy tiếp theo bắt đầu từ trạng thái sạch.
+
+#### Tài liệu tham khảo
+
+| Tài liệu | Đường dẫn |
+|----------|-----------|
+| Hướng dẫn khởi tạo AWS | <code>docs/runbooks/aws-up.md</code> |
+| Hướng dẫn thu hồi AWS | <code>docs/runbooks/aws-down.md</code> |
+| Checklist demo | <code>docs/runbooks/demo-checklist.md</code> |
+| Kiến trúc hệ thống | <code>docs/architecture.md</code> |
+| GitHub Actions setup | <code>docs/runbooks/github-actions-setup.md</code> |
+
+#### Kết luận
+
+Thu hồi tài nguyên giúp kiểm soát chi phí và chứng minh rằng hạ tầng của đề tài có thể được quản lý trọn vòng đời bằng Infrastructure as Code.

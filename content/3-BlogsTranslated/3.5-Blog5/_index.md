@@ -1,126 +1,87 @@
 ---
-title: "Blog 5"
-date: 2024-01-01
-weight: 1
+title: "EC2 C9g / C9gd Graviton5"
+date: 2026-06-30
+weight: 5
 chapter: false
 pre: " <b> 3.5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+# Amazon EC2 C9g and C9gd on AWS Graviton5
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+#### 1. Source information
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+| Item | Details |
+|---|---|
+| Original title | Amazon EC2 C9g and C9gd instances powered by AWS Graviton5 processors are now available |
+| Source | [AWS News Blog](https://aws.amazon.com/blogs/aws/amazon-ec2-c9g-and-c9gd-instances-powered-by-aws-graviton5-processors-are-now-available/) |
+| Topic | Amazon EC2, AWS Graviton5, compute-optimized instances |
 
----
+![Original blog illustration](/images/3-BlogsTranslated/3.5-Blog5/hero.png)
 
-## Architecture Guidance
+#### 2. Summary
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+Amazon EC2 **C9g** and **C9gd** instances powered by **AWS Graviton5** are generally available. They are compute-optimized instances for workloads such as real-time analytics, batch processing, video encoding, scientific modeling, CPU-based ML inference, and agentic AI.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+#### 3. Main content
 
-**The solution architecture is now as follows:**
+**3.1. Performance characteristics**
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+C9g delivers up to **25%** higher performance per vCPU than **C8g**, with **DDR5 8800MT/s** memory (described as the fastest memory of any processor instance in the cloud), **5x** more L3 cache, and up to **3x** higher packet-processing performance than **Graviton4**-based instances.
 
----
+**C9gd** adds local **NVMe SSD** storage. NVMe instance-store statistics include latency histograms by I/O size at up to **1-second** granularity via CloudWatch or `nvme-cli`, at no additional cost.
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+**3.2. Specifications**
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+Both families offer **11 sizes** from `medium` to `48xlarge`, plus bare metal. Average network bandwidth is up to **15%** higher and EBS bandwidth up to **20%** higher than the previous generation. The `48xlarge` size provides up to **100 Gbps** network and **72 Gbps** EBS (**2x** at the largest size).
 
----
+**C9g**
 
-## Technology Choices and Communication Scope
+| C9g | vCPUs | Memory (GiB) | Network (Gbps) | EBS (Gbps) |
+|---|---:|---:|---|---|
+| medium | 1 | 2 | Up to 15 | Up to 12 |
+| large | 2 | 4 | Up to 15 | Up to 12 |
+| xlarge | 4 | 8 | Up to 15 | Up to 12 |
+| 2xlarge | 8 | 16 | Up to 17 | Up to 12 |
+| 4xlarge | 16 | 32 | Up to 17 | Up to 12 |
+| 8xlarge | 32 | 64 | 17 | 12 |
+| 12xlarge | 48 | 96 | 25 | 18 |
+| 16xlarge | 64 | 128 | 34 | 24 |
+| 24xlarge | 96 | 192 | 50 | 36 |
+| 48xlarge | 192 | 384 | 100 | 72 |
+| metal-48xl | 192 | 384 | 100 | 72 |
 
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+**C9gd** (adds local storage; up to **30%** higher local storage performance than the previous generation)
 
----
+| C9gd | vCPUs | Memory (GiB) | Instance Storage (GB) | Network (Gbps) | EBS (Gbps) |
+|---|---:|---:|---|---|---|
+| medium | 1 | 2 | 1 × 59 | Up to 15 | Up to 12 |
+| large | 2 | 4 | 1 × 118 | Up to 15 | Up to 12 |
+| xlarge | 4 | 8 | 1 × 237 | Up to 15 | Up to 12 |
+| 2xlarge | 8 | 16 | 1 × 474 | Up to 17 | Up to 12 |
+| 4xlarge | 16 | 32 | 1 × 950 | Up to 17 | Up to 12 |
+| 8xlarge | 32 | 64 | 1 × 1900 | 17 | 12 |
+| 12xlarge | 48 | 96 | 3 × 950 | 25 | 18 |
+| 16xlarge | 64 | 128 | 1 × 3800 | 34 | 24 |
+| 24xlarge | 96 | 192 | 3 × 1900 | 50 | 36 |
+| 48xlarge | 192 | 384 | 3 × 3800 | 100 | 72 |
+| metal-48xl | 192 | 384 | 3 × 3800 | 100 | 72 |
 
-## The Pub/Sub Hub
+**3.3. Additional capabilities**
 
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
+- **IBC:** adjust EBS vs VPC bandwidth allocation by up to **25%**
+- **ENA Express**
+- Up to **128** EBS volumes on virtual instances
+- Savings Plans, On-Demand, Spot, Dedicated Instances, and Dedicated Hosts
+- **Nitro Isolation Engine** with formal verification
 
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
+**3.4. Availability**
 
----
+Available in **US East (Ohio, N. Virginia)**, **US West (Oregon)**, and **Europe (Frankfurt)**; additional Regions will follow.
 
-## Core Microservice
+#### 4. Remarks
 
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
+The article gives a detailed view of the new Graviton compute generation on EC2, covering not only overall performance gains but also memory, cache, packet processing, network/EBS bandwidth, and local storage options. Separating C9g and C9gd clarifies when EBS-backed compute is enough and when local NVMe is needed for scratch space, temporary caches, or low-latency buffers.
 
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
+Comparisons with C8g and Graviton4, together with full size tables, support capacity planning and cost estimation better than high-level announcements alone. Features such as IBC, ENA Express, EBS attachment limits, and Nitro Isolation Engine also show attention to both performance and isolation requirements.
 
----
-
-## Front Door Microservice
-
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
-
----
-
-## Staging ER7 Microservice
-
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+In practice, the article is useful when upgrading from earlier Graviton generations or selecting instances for HPC, batch, video encoding, CPU inference, or agentic AI. Adoption decisions should consider Regional availability, purchase options, and application I/O characteristics when choosing between C9g and C9gd.

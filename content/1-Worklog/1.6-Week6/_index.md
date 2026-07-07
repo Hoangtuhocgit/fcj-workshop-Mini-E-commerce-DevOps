@@ -1,57 +1,38 @@
 ---
 title: "Week 6 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-05-25
+weight: 6
 chapter: false
 pre: " <b> 1.6. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 6 objectives:
 
-### Week 6 Objectives:
+* Review Week 5 topics: AWS Support, AWS CLI on EC2, and the Highly Available Web Application model.
+* Learn the overall strategy for migrating systems to AWS.
+* Understand virtual server migration with AWS VM Import/Export and database migration with AWS DMS and AWS SCT.
+* Reinforce security, networking, and monitoring during migration, and clean up lab resources afterward.
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week timeframe: **May 25–31, 2026**
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Day | Task | Start Date | Completion Date | Reference material |
+| --- | --- | --- | --- | --- |
+| 2 | Review Week 5 content on AWS Support, AWS CLI on EC2, the highly available web application model, and the related deployment workshop. | May 25, 2026 | May 25, 2026 | <https://cloudjourney.awsstudygroup.com/2-migrate/> |
+| 3 | **Migration strategy to AWS:** <br>&emsp; + Understand migration concepts and the role of workload assessment before moving to the cloud. <br>&emsp; + Learn the basic steps: assess the system, plan, migrate, test, and optimize after migration. <br>&emsp; + Recognize common risks such as downtime, network misconfiguration, permission errors, data loss, and unexpected costs. | May 26, 2026 | May 26, 2026 | <https://cloudjourney.awsstudygroup.com/2-migrate/> |
+| 4 | **Virtual server migration with AWS VM Import/Export:** <br>&emsp; + Understand how VM Import/Export moves virtual machines from local/on-premises environments to AWS. <br>&emsp; + Learn the workflow: prepare the VM image, upload to Amazon S3, and import as an Amazon Machine Image or EC2 instance. <br>&emsp; + Review related components such as S3 buckets, IAM Roles, EC2, AMIs, image formats, data security, and cost. | May 27, 2026 | May 28, 2026 | <https://000014.awsstudygroup.com/> |
+| 5 | **Database migration with AWS DMS and AWS SCT:** <br>&emsp; + Understand the role of AWS DMS in moving data between source and target databases. <br>&emsp; + Learn about replication instances, source/target endpoints, migration tasks, and migration types such as full load and CDC. <br>&emsp; + Explore AWS SCT for schema conversion when source and target engines differ. <br>&emsp; + Practice simulating source/target databases, configuring endpoints, creating migration tasks, and validating data after migration. | May 28, 2026 | May 29, 2026 | <https://000043.awsstudygroup.com/> |
+| 6 | **Security, networking, and monitoring during migration:** <br>&emsp; + Review security groups, subnets, route tables, IAM permissions, snapshots/backups, and rollback options when needed. <br>&emsp; + Monitor logs, metrics, and migration task status with CloudWatch or the AWS management console. <br> **Cleanup:** Remove lab resources—EC2 instances, AMIs, S3 objects, RDS instances, replication instances, endpoints, migration tasks, and snapshots—to limit unexpected charges. | May 29, 2026 | May 31, 2026 | <https://000043.awsstudygroup.com/><br><https://000014.awsstudygroup.com/> |
 
-### Week 6 Achievements:
+### Week 6 achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Understands the overall process of migrating workloads from traditional environments to AWS.
 
-* Successfully created and configured an AWS Free Tier account.
+* Knows the role of AWS VM Import/Export in virtual server migration.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* Understands how AWS DMS and SCT support database migration and schema conversion.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* Knows what to verify after migration: data integrity, application connectivity, security, logs, and cost.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Strengthens skills in planning, testing, monitoring, and cleaning up resources after AWS lab work.
