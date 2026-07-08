@@ -39,11 +39,12 @@ The script installs kube-prometheus-stack via Helm, using configuration in <code
 
 The script checks:
 
-+ CloudWatch alarms for RDS and ALB.
-+ Prometheus and Grafana pods in the <code>observability</code> namespace.
++ CloudWatch alarms for RDS (<code>rds-cpu-high</code>, <code>rds-free-storage-low</code> — OK status).
++ ALB warning: if ALB alarms are not yet in Terraform state, the script suggests re-running <code>terraform plan</code> and <code>terraform apply</code> after Ingress is healthy.
++ Prometheus and Grafana pods in <code>observability</code> (5 pods Running).
 + Grafana accessibility via port-forward.
 
-![verify-phase4.ps1 output (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/verify-phase4-live.png)
+![verify-phase4.ps1 with RDS alarms OK and ALB warning (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/verify-phase4-live.png)
 
 #### Access Grafana
 
@@ -57,7 +58,9 @@ Open <code>http://localhost:3000</code>, sign in with user <code>admin</code> an
 observability/aws/dashboards/cluster-overview.json
 ~~~
 
-![Cluster overview - Online Boutique dashboard on Grafana (real browser capture)](/images/5-Workshop/5.4-aws-eks/grafana-phase4-live.png)
+![Cluster overview — Online Boutique dashboard on Grafana: 6 running pods, CPU and memory (real browser capture)](/images/5-Workshop/5.4-aws-eks/grafana-phase4-live.png)
+
+The dashboard shows three panels: CPU rate and memory working set for 6 boutique pods (frontend, cartservice, checkoutservice, currencyservice, productcatalogservice, redis), plus <strong>6</strong> running pods.
 
 #### CloudWatch
 

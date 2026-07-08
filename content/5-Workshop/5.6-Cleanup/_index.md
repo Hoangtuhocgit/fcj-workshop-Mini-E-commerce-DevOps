@@ -21,16 +21,25 @@ Before teardown, the workshop completed:
 + Exposing the frontend through ALB.
 + Setting up observability with Prometheus, Grafana, and CloudWatch.
 
-![terraform destroy results (live capture)](/images/5-Workshop/5.6-Cleanup/terraform-destroy-live.png)
+![terraform destroy -auto-approve and cluster removal verification (live capture)](/images/5-Workshop/5.6-Cleanup/terraform-destroy-live.png)
 
 #### Tear down AWS infrastructure
 
+Before destroy, verify the correct AWS account, region, and environment directory. Resources that may be deleted include the EKS cluster, RDS instance, ALB, NAT Gateway, and related resources.
+
 ~~~powershell
 cd infra/environments/aws
-terraform destroy
+terraform destroy -auto-approve
 ~~~
 
-Before confirming destroy, verify the correct AWS account, region, and environment directory. Resources that may be deleted include the EKS cluster, RDS instance, ALB, NAT Gateway, and related resources.
+The screenshot records typical destroy times: RDS ~5 minutes, EKS cluster ~10 minutes, VPC ~7 minutes. After destroy, verify:
+
+~~~powershell
+aws eks list-clusters --region ap-southeast-1
+terraform state list
+~~~
+
+Expected results: <code>clusters: []</code> and <code>(no resources – state empty)</code>.
 
 {{% notice warning %}}
 EKS, RDS, NAT Gateway, and ALB can all incur charges. After the demo, tear down resources to avoid prolonged costs.

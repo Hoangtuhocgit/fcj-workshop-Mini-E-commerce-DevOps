@@ -26,17 +26,20 @@ The <code>.env</code> file contains variables for Docker Compose, especially Pos
 docker compose up --build -d
 ~~~
 
-Expected output on success:
+Expected output on success (screenshot shows 10 containers):
 
 ~~~text
-[+] Building 4/4 ... DONE
-[+] Running 11/11
- ✔ Container mini-ecommerce-devops-postgres-1   Healthy
- ✔ Container mini-ecommerce-devops-redis-1      Healthy
- ✔ Container mini-ecommerce-devops-frontend-1   Started
- ✔ Container mini-ecommerce-devops-cartservice-1         Started
- ✔ Container mini-ecommerce-devops-checkoutservice-1     Started
- ✔ Container mini-ecommerce-devops-productcatalogservice-1 Started
+[+] up 10/10
+ ✔ Container mini-ecommerce-devops-paymentservice-1          Running
+ ✔ Container mini-ecommerce-devops-currencyservice-1       Running
+ ✔ Container mini-ecommerce-devops-shippingservice-1       Running
+ ✔ Container mini-ecommerce-devops-productcatalogservice-1 Running
+ ✔ Container mini-ecommerce-devops-redis-1                   Healthy
+ ✔ Container mini-ecommerce-devops-emailservice-1            Running
+ ✔ Container mini-ecommerce-devops-cartservice-1             Running
+ ✔ Container mini-ecommerce-devops-postgres-1                  Running
+ ✔ Container mini-ecommerce-devops-checkoutservice-1         Running
+ ✔ Container mini-ecommerce-devops-frontend-1                Running
 ~~~
 
 The <code>--build</code> flag ensures images are built from the current source code. The <code>-d</code> flag runs containers in the background so you can continue checking status and logs.
@@ -53,7 +56,7 @@ The first build may take 10 to 20 minutes because the project includes multiple 
 docker compose ps
 ~~~
 
-The expected result is that core services are in a running state. For Redis or PostgreSQL, a healthy status (when health checks are configured) is the preferred outcome.
+The expected result is 10 services in <code>Up</code> state. In the screenshot, <code>postgres</code> and <code>redis</code> show <code>(healthy)</code>; <code>frontend</code> maps port <code>0.0.0.0:8080->8080/tcp</code>.
 
 ![docker compose ps results on a live machine](/images/5-Workshop/5.3-local-docker-compose/compose-ps-screenshot.png)
 
@@ -89,6 +92,6 @@ Open a browser at:
 http://127.0.0.1:8080
 ~~~
 
-![Online Boutique home page (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-home-real.png)
+![Online Boutique home page with local badge and Hot Products grid (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-home-real.png)
 
-If the home page displays normally, proceed to functional verification in section 5.3.2.
+The home page shows a <code>local</code> badge in the top-left corner and a <strong>Hot Products</strong> grid with 9 sample products. If the home page displays normally, proceed to functional verification in section 5.3.2.

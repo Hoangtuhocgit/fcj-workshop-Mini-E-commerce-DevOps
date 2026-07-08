@@ -18,7 +18,7 @@ Giai đoạn chuẩn bị giúp bảo đảm các công cụ, quyền truy cập
 | Terraform | >= 1.5 | Tạo hạ tầng AWS bằng Infrastructure as Code |
 | AWS CLI v2 | Mới nhất | Xác thực AWS và thao tác với EKS |
 | kubectl | Tương thích EKS 1.30 | Quản lý tài nguyên Kubernetes |
-| Helm | 3.x | Cài các thành phần nền tảng trên EKS |
+| Helm | 3.x trở lên | Cài các thành phần nền tảng trên EKS |
 | Git | Mới nhất | Quản lý mã nguồn và GitOps repository |
 
 Trên Windows, dự án cung cấp các script dạng <code>.ps1</code>; trên Linux hoặc macOS có thể dùng các script <code>.sh</code> tương ứng.
@@ -101,9 +101,12 @@ docker --version
 terraform version
 aws --version
 kubectl version --client
-helm version
+helm version --short
+git --version
 ~~~
 
-![Kết quả kiểm tra phiên bản công cụ](/images/5-Workshop/5.2-Prerequisite/tools-versions.png)
+![Kết quả kiểm tra phiên bản công cụ trên máy thực tế](/images/5-Workshop/5.2-Prerequisite/tools-versions.png)
+
+Ảnh minh chứng ghi nhận các phiên bản sau: Docker 29.2.1, Terraform v1.15.2, AWS CLI 2.34.36, kubectl client v1.34.1, Helm v4.2.0 và Git 2.54.0. Phiên bản cụ thể có thể khác tùy máy, miễn là lệnh chạy thành công và tương thích với EKS 1.30.
 
 Khi các lệnh trên trả về bình thường, môi trường đã đủ điều kiện để chuyển sang bước chạy local và triển khai AWS.

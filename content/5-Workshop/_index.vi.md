@@ -17,7 +17,7 @@ Mục 5 trình bày quá trình triển khai thực nghiệm của đề tài Mi
 #### Phạm vi triển khai
 
 + Môi trường local dùng Docker Compose để chạy đầy đủ các service của ứng dụng, bao gồm frontend, catalog, cart, checkout, currency, shipping, payment, email, Redis và PostgreSQL.
-+ Môi trường AWS dùng EKS và GitOps để triển khai nhóm service cốt lõi, phơi bày giao diện qua Application Load Balancer và quản lý secret qua AWS Secrets Manager.
++ Môi trường AWS dùng EKS và GitOps để triển khai 6 workload trong namespace boutique (frontend, catalog, cart, checkout, currency, redis), phơi bày giao diện qua Application Load Balancer và quản lý secret qua AWS Secrets Manager.
 + Hạ tầng cloud được tạo bằng Terraform, có thể dựng lại và thu hồi theo mô hình tạm thời nhằm kiểm soát chi phí.
 + Quy trình CI/CD sử dụng GitHub Actions với OIDC, build image, push lên ECR, quét bảo mật và cập nhật repository GitOps.
 

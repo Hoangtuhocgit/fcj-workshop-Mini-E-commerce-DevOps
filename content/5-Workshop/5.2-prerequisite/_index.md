@@ -18,7 +18,7 @@ The preparation phase ensures that tools, access permissions, and baseline confi
 | Terraform | >= 1.5 | Provision AWS infrastructure with Infrastructure as Code |
 | AWS CLI v2 | Latest | Authenticate to AWS and interact with EKS |
 | kubectl | Compatible with EKS 1.30 | Manage Kubernetes resources |
-| Helm | 3.x | Install platform components on EKS |
+| Helm | 3.x or later | Install platform components on EKS |
 | Git | Latest | Manage source code and the GitOps repository |
 
 On Windows, the project provides <code>.ps1</code> scripts; on Linux or macOS, use the corresponding <code>.sh</code> scripts.
@@ -101,9 +101,12 @@ docker --version
 terraform version
 aws --version
 kubectl version --client
-helm version
+helm version --short
+git --version
 ~~~
 
-![Tool version verification results](/images/5-Workshop/5.2-Prerequisite/tools-versions.png)
+![Tool version verification results (live capture)](/images/5-Workshop/5.2-Prerequisite/tools-versions.png)
+
+The screenshot records: Docker 29.2.1, Terraform v1.15.2, AWS CLI 2.34.36, kubectl client v1.34.1, Helm v4.2.0, and Git 2.54.0. Exact versions may vary by machine as long as commands succeed and remain compatible with EKS 1.30.
 
 When all commands return successfully, the environment is ready to proceed with local execution and AWS deployment.

@@ -31,6 +31,13 @@ terraform apply tfplan
 
 Thời gian apply thường kéo dài 15 đến 25 phút vì EKS và RDS cần nhiều thời gian provisioning.
 
+Sau apply, chạy <code>terraform output</code> để lấy giá trị quan trọng. Ảnh minh chứng ghi nhận:
+
++ <code>eks_cluster_name</code> = <code>mini-ecommerce-devops</code>
++ <code>rds_endpoint</code> = <code>mini-ecommerce-devops-platform....ap-southeast-1.rds.amazonaws.com:5432</code>
+
+Có thể xuất hiện cảnh báo <code>Deprecated Parameter: dynamodb_table</code> — đây là thông báo từ Terraform backend, không ảnh hưởng kết quả apply.
+
 ![Kết quả terraform output sau apply (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/terraform-plan-live.png)
 
 #### Output cần ghi nhận
@@ -50,12 +57,12 @@ Các output này được dùng cho các bước tiếp theo như cấu hình ku
 
 ~~~powershell
 aws eks update-kubeconfig --region ap-southeast-1 --name mini-ecommerce-devops
-kubectl get nodes
+kubectl get nodes -o wide
 ~~~
 
-Kết quả mong đợi là node ở trạng thái Ready.
+Kết quả mong đợi là 1 node ở trạng thái <code>Ready</code>, phiên bản <code>v1.30.14-eks</code> (ảnh minh chứng: node <code>ip-10-0-1-60.ap-southeast-1.compute.internal</code>, age khoảng 19 phút).
 
-![Kết quả kubectl get nodes -o wide (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/kubectl-nodes-live.png)
+![Kết quả aws eks update-kubeconfig và kubectl get nodes -o wide (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/kubectl-nodes-live.png)
 
 #### Tài nguyên được tạo
 

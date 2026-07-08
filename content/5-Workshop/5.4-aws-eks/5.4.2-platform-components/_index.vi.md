@@ -73,13 +73,13 @@ Kết quả mong đợi:
 | Tài nguyên | Trạng thái |
 |------------|------------|
 | Application <code>online-boutique</code> | Synced / Healthy |
-| Pod trong <code>boutique</code> | Running |
-| ClusterSecretStore | Ready |
-| ExternalSecret | SecretSynced |
+| Pod trong <code>boutique</code> | 6 pod Running (frontend, productcatalog, cart, checkout, currency, redis) |
+| ClusterSecretStore <code>aws-secretsmanager</code> | Valid / Ready |
+| ExternalSecret <code>rds-master</code> | SecretSynced |
 
-![kubectl get pods external-secrets / argocd / boutique (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/platform-pods-live.png)
+![kubectl get pods trong external-secrets, argocd và boutique — 6 pod Running (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/platform-pods-live.png)
 
-![Argo CD Application, ClusterSecretStore và ExternalSecret (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/argocd-sync-live.png)
+![Argo CD Application online-boutique Synced/Healthy, ClusterSecretStore và ExternalSecret rds-master (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/argocd-sync-live.png)
 
 #### Kết quả
 

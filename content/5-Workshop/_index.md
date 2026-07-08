@@ -17,7 +17,7 @@ The project uses the Online Boutique application as a sample microservices workl
 #### Deployment scope
 
 + The local environment uses Docker Compose to run all application services, including frontend, catalog, cart, checkout, currency, shipping, payment, email, Redis, and PostgreSQL.
-+ The AWS environment uses EKS and GitOps to deploy core services, expose the application through an Application Load Balancer, and manage secrets via AWS Secrets Manager.
++ The AWS environment uses EKS and GitOps to deploy 6 workloads in the boutique namespace (frontend, catalog, cart, checkout, currency, redis), expose the application through an Application Load Balancer, and manage secrets via AWS Secrets Manager.
 + Cloud infrastructure is provisioned with Terraform and can be created and torn down on a temporary basis to control costs.
 + The CI/CD pipeline uses GitHub Actions with OIDC to build images, push to ECR, run security scans, and update the GitOps repository.
 

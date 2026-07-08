@@ -39,11 +39,12 @@ Script cài kube-prometheus-stack bằng Helm, sử dụng cấu hình trong <co
 
 Script kiểm tra:
 
-+ CloudWatch alarms cho RDS và ALB.
-+ Pod Prometheus và Grafana trong namespace <code>observability</code>.
++ CloudWatch alarms cho RDS (<code>rds-cpu-high</code>, <code>rds-free-storage-low</code> — trạng thái OK).
++ Cảnh báo ALB: nếu alarm ALB chưa có trong Terraform state, script gợi ý chạy lại <code>terraform plan</code> và <code>terraform apply</code> sau khi Ingress healthy.
++ Pod Prometheus và Grafana trong namespace <code>observability</code> (5 pod Running).
 + Khả năng truy cập Grafana qua port-forward.
 
-![Kết quả .\scripts\verify-phase4.ps1 (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/verify-phase4-live.png)
+![Kết quả verify-phase4.ps1 với RDS alarms OK và cảnh báo ALB (log PowerShell thật)](/images/5-Workshop/5.4-aws-eks/verify-phase4-live.png)
 
 #### Truy cập Grafana
 
@@ -57,7 +58,9 @@ Mở <code>http://localhost:3000</code>, đăng nhập bằng user <code>admin</
 observability/aws/dashboards/cluster-overview.json
 ~~~
 
-![Dashboard Cluster overview - Online Boutique trên Grafana (chụp trình duyệt thật)](/images/5-Workshop/5.4-aws-eks/grafana-phase4-live.png)
+![Dashboard Cluster overview — Online Boutique trên Grafana: 6 running pods, CPU và memory (chụp trình duyệt thật)](/images/5-Workshop/5.4-aws-eks/grafana-phase4-live.png)
+
+Dashboard hiển thị 3 panel: CPU rate và memory working set cho 6 pod boutique (frontend, cartservice, checkoutservice, currencyservice, productcatalogservice, redis), cùng số <strong>6</strong> running pods.
 
 #### CloudWatch
 

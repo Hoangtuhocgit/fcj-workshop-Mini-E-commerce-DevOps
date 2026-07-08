@@ -73,13 +73,13 @@ Expected results:
 | Resource | Status |
 |----------|--------|
 | Application <code>online-boutique</code> | Synced / Healthy |
-| Pods in <code>boutique</code> | Running |
-| ClusterSecretStore | Ready |
-| ExternalSecret | SecretSynced |
+| Pods in <code>boutique</code> | 6 pods Running (frontend, productcatalog, cart, checkout, currency, redis) |
+| ClusterSecretStore <code>aws-secretsmanager</code> | Valid / Ready |
+| ExternalSecret <code>rds-master</code> | SecretSynced |
 
-![kubectl get pods in external-secrets / argocd / boutique (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/platform-pods-live.png)
+![kubectl get pods in external-secrets, argocd, and boutique — 6 Running pods (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/platform-pods-live.png)
 
-![Argo CD Application, ClusterSecretStore, and ExternalSecret (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/argocd-sync-live.png)
+![Argo CD Application online-boutique Synced/Healthy, ClusterSecretStore, and ExternalSecret rds-master (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/argocd-sync-live.png)
 
 #### Result
 

@@ -20,7 +20,7 @@ The workshop targets three main goals. First, verify that the application runs s
 
 The system comprises the following main layers:
 
-+ Application layer: on EKS (Phase 1), <code>frontend</code>, <code>productcatalogservice</code>, <code>cartservice</code>, <code>checkoutservice</code>, and in-cluster Redis; the local environment adds supporting services (currency, payment, shipping, email) for full checkout testing.
++ Application layer: on EKS (Phase 1), <code>frontend</code>, <code>productcatalogservice</code>, <code>cartservice</code>, <code>checkoutservice</code>, <code>currencyservice</code>, and in-cluster Redis; the local environment adds payment, shipping, and email for full checkout testing.
 + Infrastructure layer: VPC <code>10.0.0.0/16</code>, public/private subnets, NAT Gateway, EKS <code>mini-ecommerce-devops</code> (v1.30), ECR (4 repositories), RDS PostgreSQL 16, IAM OIDC/IRSA, S3 + DynamoDB for Terraform state, and Secrets Manager.
 + Kubernetes platform layer: AWS Load Balancer Controller, External Secrets Operator, Argo CD, Prometheus/Grafana (namespace <code>observability</code>), and CloudWatch alarms.
 + CI/CD layer: GitHub Actions (<code>ci-build-push</code>, <code>terraform-plan</code>), GitHub OIDC, Trivy, cosign/SBOM, and the GitOps repository.
@@ -58,10 +58,10 @@ This separation keeps the application pipeline and deployment state more indepen
 |------------|---------------|---------|
 | Product browsing | Yes | Yes |
 | Shopping cart | Yes | Yes, using Redis in the cluster |
-| Full checkout | Yes | Limited in Phase 1 |
+| Full checkout | Yes (10 containers) | Limited — payment, email, shipping not on cluster |
 | PostgreSQL | Yes, runs locally (platform DB) | Yes, RDS platform DB (Terraform + ESO) |
 | Public ingress | Not required | Yes, ALB HTTP :80 |
-| Core services on EKS | — | 4 happy-path microservices + Redis |
+| Workloads on EKS | — | 6 pods in boutique namespace |
 | Observability | Basic | Prometheus, Grafana, CloudWatch |
 
 #### Conclusion

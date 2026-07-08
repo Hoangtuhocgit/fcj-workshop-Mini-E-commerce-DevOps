@@ -16,7 +16,11 @@ This step verifies that the application has been successfully synced to EKS by A
 .\scripts\verify-phase3.ps1
 ~~~
 
-The script checks Argo CD Application status, pods in the <code>boutique</code> namespace, ALB Ingress, and HTTP smoke test.
+The script checks Argo CD Application status, pods in the <code>boutique</code> namespace, ALB Ingress, and HTTP smoke test. The screenshot records:
+
++ **ESO:** 3 external-secrets pods Running; ClusterSecretStore <code>aws-secretsmanager</code> Valid; ExternalSecret <code>rds-master</code> SecretSynced.
++ **Argo CD:** <code>Application online-boutique: sync=Synced health=Healthy</code>.
++ **Boutique:** 6 pods Running; ALB hostname like <code>k8s-boutique-frontend-....ap-southeast-1.elb.amazonaws.com</code>; <code>PASS: frontend HTTP 200</code>.
 
 #### Get ALB hostname
 
@@ -35,18 +39,18 @@ $alb = kubectl get ingress frontend-ingress -n boutique -o jsonpath='{.status.lo
 
 The expected result is HTTP 200 from the frontend.
 
-![verify-phase3.ps1 output (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/verify-phase3-live.png)
+![verify-phase3.ps1 with ESO, Argo CD, and PASS: frontend HTTP 200 (real PowerShell log)](/images/5-Workshop/5.4-aws-eks/verify-phase3-live.png)
 
 #### Browser verification
 
-1. Open the ALB URL.
-2. Confirm the home page displays products.
-3. Add a product to the cart to verify frontend, cartservice, and Redis.
+1. Open the ALB URL (hostname from Ingress or script output).
+2. Confirm the <strong>Hot Products</strong> page shows 9 products.
+3. The UI still displays a <code>local</code> badge (default Online Boutique badge); the footer shows the actual Kubernetes pod, e.g. <code>frontend-6cc9f9d7c7-6r4zl</code>.
 
-![Online Boutique home page via ALB (real browser capture)](/images/5-Workshop/5.4-aws-eks/alb-browser-real.png)
+![Online Boutique home page via ALB with local badge and EKS frontend pod (real browser capture)](/images/5-Workshop/5.4-aws-eks/alb-browser-real.png)
 
 {{% notice note %}}
-Phase 1 on EKS focuses on core services. The full checkout flow is still tested on Docker Compose because additional supporting services are required.
+Phase 1 on EKS deploys 6 workloads in the boutique namespace. The full checkout flow (payment, email, shipping) is still tested on Docker Compose because those services are not on the cluster.
 {{% /notice %}}
 
 #### Check Argo CD UI

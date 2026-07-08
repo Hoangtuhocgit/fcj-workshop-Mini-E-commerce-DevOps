@@ -20,9 +20,9 @@ After containers are running, verify that the application responds correctly and
 ./scripts/smoke-local.sh
 ~~~
 
-The expected result is HTTP 200 from the frontend on port 8080.
+The expected result is the line <code>PASS: frontend HTTP 200</code> when the script checks <code>http://127.0.0.1:8080</code>.
 
-![smoke-local.ps1 results (live capture)](/images/5-Workshop/5.3-local-docker-compose/smoke-local-live.png)
+![smoke-local.ps1 showing PASS: frontend HTTP 200 (live capture)](/images/5-Workshop/5.3-local-docker-compose/smoke-local-live.png)
 
 #### PostgreSQL check
 
@@ -30,28 +30,28 @@ The expected result is HTTP 200 from the frontend on port 8080.
 .\scripts\verify-platform-db.ps1
 ~~~
 
-This script verifies connectivity to PostgreSQL in Docker Compose. It confirms the platform database is working before comparing with RDS in the AWS environment.
+This script verifies connectivity to PostgreSQL in Docker Compose. The expected output includes a <code>platform_db_ok</code> table returning <code>1</code> and the line <code>Platform PostgreSQL connectivity OK</code>. It confirms the platform database is working before comparing with RDS in the AWS environment.
 
-![verify-platform-db.ps1 results (live capture)](/images/5-Workshop/5.3-local-docker-compose/verify-db-live.png)
+![verify-platform-db.ps1 with platform_db_ok and Platform PostgreSQL connectivity OK (live capture)](/images/5-Workshop/5.3-local-docker-compose/verify-db-live.png)
 
 #### UI verification
 
 Manual verification steps:
 
-1. Open <code>http://127.0.0.1:8080</code>.
-2. Browse the product list and confirm data displays correctly.
-3. Select a product and add it to the cart.
-4. Open the cart and enter test payment details.
-5. Confirm the order completion page displays correctly.
+1. Open <code>http://127.0.0.1:8080</code> and confirm the <code>local</code> badge on the UI.
+2. Open the <strong>Sunglasses</strong> product ($19.99) and click <strong>Add To Cart</strong>.
+3. Open the cart and confirm 1 item with total $28.98 (including $8.99 shipping).
+4. Fill in the Shipping & Payment form (email, address, test card) and click <strong>Place Order</strong>.
+5. Confirm the <strong>Your order is complete!</strong> page shows a confirmation and tracking number.
 
-![Product detail page (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-product-real.png)
+![Sunglasses product detail $19.99 with local badge (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-product-real.png)
 
-![Cart and checkout form (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-cart-real.png)
+![Cart with 1 item and Shipping & Payment form (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-cart-real.png)
 
-![Completed order (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-checkout-real.png)
+![Your order is complete! page with total $28.98 (live capture)](/images/5-Workshop/5.3-local-docker-compose/local-checkout-real.png)
 
 {{% notice note %}}
-The full checkout flow is tested on Docker Compose. On AWS EKS, Phase 1 focuses on core services and does not deploy all supporting services.
+The full checkout flow (payment, email, shipping) is tested on Docker Compose with 10 containers. On AWS EKS Phase 1, the <code>boutique</code> namespace runs 6 workloads (frontend, productcatalog, cart, checkout, currency, redis); supporting services such as payment, email, and shipping are not deployed to the cluster.
 {{% /notice %}}
 
 #### Stop the local environment
