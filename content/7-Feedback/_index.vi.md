@@ -6,8 +6,6 @@ chapter: false
 pre: " <b> 7. </b> "
 ---
 
-> Tại đây em chia sẻ trải nghiệm cá nhân khi tham gia chương trình **First Cloud Journey — FCAJ** tại **Công ty TNHH Amazon Web Services Vietnam** (04/05/2026 – 10/07/2026), nhằm góp phần giúp team FCAJ và mentor cải thiện trải nghiệm cho các thực tập sinh sau.
-
 ### Đánh giá chung
 
 **1. Môi trường làm việc**  

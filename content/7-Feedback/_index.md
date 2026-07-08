@@ -6,8 +6,6 @@ chapter: false
 pre: " <b> 7. </b> "
 ---
 
-> Here I share my personal experience participating in the **First Cloud Journey — FCAJ** program at **Amazon Web Services Vietnam Co., Ltd.** (May 4 – July 10, 2026), to help the FCAJ team and mentors improve the experience for future interns.
-
 ### Overall Evaluation
 
 **1. Working Environment**  
