@@ -220,7 +220,6 @@ Phiên cuối chuyển từ kỹ thuật sang **tư duy nghiệp vụ (business 
 | 3 | Kiến trúc multi-agent | Tham khảo mô hình 3 agents (vision → engineering → design) cho bài lab AI |
 | 4 | LLM production | Thiết kế downstream service handle output biến thiên; test nhiều trường hợp |
 | 5 | Tư duy doanh nghiệp | Áp dụng 4 câu hỏi (ai xài, xài gì, tại sao, khi nào) khi thiết kế giải pháp |
-| 6 | Tham gia hackathon | Chủ động đăng ký cuộc thi để tích lũy kinh nghiệm build sản phẩm trong thời gian ngắn |
 
 ### Trải nghiệm tham dự sự kiện
 

@@ -220,7 +220,6 @@ Final session shifted from technical to **business mindset** — AI deployment e
 | 3 | Multi-agent architecture | Reference 3-agent model (vision → engineering → design) for AI labs |
 | 4 | LLM production | Design downstream services to handle variable output; test many cases |
 | 5 | Business thinking | Apply 4 questions (who, what, why, when) when designing solutions |
-| 6 | Hackathon participation | Proactively register for competitions to build products under time pressure |
 
 ### Event Experience
 
