@@ -1,6 +1,6 @@
 ---
 title: "Nhật ký công việc"
-date: 2026-04-20
+date: 2026-04-17
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
@@ -8,7 +8,7 @@ pre: " <b> 1. </b> "
 
 Trang này tổng hợp nhật ký công việc **12 tuần** trong chương trình First Cloud Journey (FCAJ), theo lộ trình [Cloud Journey](https://cloudjourney.awsstudygroup.com/) của AWS Study Group. Mỗi tuần ghi lại mục tiêu, công việc thực hiện, khung thời gian và kết quả đạt được.
 
-Toàn bộ chương trình được hoàn thành trong khoảng **3 tháng** (**20/04/2026 – 12/07/2026**), lần lượt đi qua các giai đoạn: khám phá AWS cơ bản, dịch chuyển workload, tối ưu hệ thống, hiện đại hóa ứng dụng, container và phân tích dữ liệu. *Giai đoạn thực tập chính thức tại AWS Vietnam ghi nhận từ 04/05/2026 đến 10/07/2026; các tuần đầu (20/04–03/05) là giai đoạn làm quen và chuẩn bị trước khi bắt đầu kỳ thực tập.* Nội dung từng tuần như sau:
+Toàn bộ chương trình được hoàn thành trong khoảng **3 tháng** (**17/04/2026 – 12/07/2026**), lần lượt đi qua các giai đoạn: khám phá AWS cơ bản, dịch chuyển workload, tối ưu hệ thống, hiện đại hóa ứng dụng, container và phân tích dữ liệu. *Giai đoạn thực tập chính thức tại AWS Vietnam ghi nhận từ 04/05/2026 đến 10/07/2026; các tuần đầu (17/04–03/05) là giai đoạn làm quen và chuẩn bị trước khi bắt đầu kỳ thực tập.* Nội dung từng tuần như sau:
 
 **Tuần 1:** [Làm quen AWS, EC2, AWS Console và AWS CLI](1.1-week1/)
 

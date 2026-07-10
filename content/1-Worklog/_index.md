@@ -1,6 +1,6 @@
 ---
 title: "Worklog"
-date: 2026-04-20
+date: 2026-04-17
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
@@ -8,7 +8,7 @@ pre: " <b> 1. </b> "
 
 This page summarizes my **12-week** worklog in the First Cloud Journey (FCAJ) program, following the [Cloud Journey](https://cloudjourney.awsstudygroup.com/) learning path from AWS Study Group. Each week records objectives, tasks completed, timeframe, and outcomes.
 
-The full program was completed over about **3 months** (**April 20–July 12, 2026**), covering AWS fundamentals, workload migration, system optimization, application modernization, containers, and data analytics. *The official AWS Vietnam internship period is May 4–July 10, 2026; the first weeks (April 20–May 3) were onboarding and preparation before the internship began.* Weekly contents:
+The full program was completed over about **3 months** (**April 17–July 12, 2026**), covering AWS fundamentals, workload migration, system optimization, application modernization, containers, and data analytics. *The official AWS Vietnam internship period is May 4–July 10, 2026; the first weeks (April 17–May 3) were onboarding and preparation before the internship began.* Weekly contents:
 
 **Week 1:** [Getting familiar with AWS, EC2, AWS Console, and AWS CLI](1.1-week1/)
 

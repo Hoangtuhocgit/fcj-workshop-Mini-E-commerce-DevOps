@@ -1,6 +1,6 @@
 ---
 title: "Week 1 Worklog"
-date: 2026-04-20
+date: 2026-04-17
 weight: 1
 chapter: false
 pre: " <b> 1.1. </b> "
@@ -11,7 +11,7 @@ pre: " <b> 1.1. </b> "
 * Understand core AWS service groups and how to use the AWS Console and AWS CLI.
 * Build a foundation on EC2 (instances, AMI, EBS), SSH, and Elastic IP.
 
-### Week timeframe: **April 20–26, 2026**
+### Week timeframe: **April 17–26, 2026**
 
 ### Tasks to be carried out this week:
 

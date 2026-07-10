@@ -1,6 +1,6 @@
 ---
 title: "Worklog Tuần 1"
-date: 2026-04-20
+date: 2026-04-17
 weight: 1
 chapter: false
 pre: " <b> 1.1. </b> "
@@ -11,7 +11,7 @@ pre: " <b> 1.1. </b> "
 * Nắm các nhóm dịch vụ AWS cơ bản; sử dụng AWS Console và AWS CLI.
 * Nền tảng EC2 (instance, AMI, EBS), SSH và Elastic IP.
 
-### Khung thời gian tuần: **20/04/2026 – 26/04/2026**
+### Khung thời gian tuần: **17/04/2026 – 26/04/2026**
 
 ### Các công việc cần triển khai trong tuần này:
 
