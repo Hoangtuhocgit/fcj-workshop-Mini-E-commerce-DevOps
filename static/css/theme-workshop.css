@@ -282,16 +282,34 @@ pre {
   min-width: 14rem;
 }
 
-/* Nguồn tài liệu — links */
+/* Nguồn tài liệu — compact labeled links */
 #body-inner table th:nth-child(5),
 #body-inner table td:nth-child(5) {
-  min-width: 10rem;
-  word-break: break-word;
+  min-width: 11rem;
+  max-width: 13rem;
+  vertical-align: middle;
+  text-align: center;
 }
 
 #body-inner table td:nth-child(5) a {
-  word-break: break-all;
+  display: inline-block;
+  margin: 0.2rem 0;
+  padding: 0.15rem 0.25rem;
+  font-size: 0.92em;
+  line-height: 1.45;
+  word-break: normal;
   white-space: normal;
+  text-align: center;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(72, 129, 205, 0.35);
+}
+
+#body-inner table td:nth-child(5) a:hover {
+  border-bottom-color: var(--MAIN-LINK-HOVER-color);
+}
+
+#body-inner table td:nth-child(5) a + a {
+  margin-top: 0.35rem;
 }
 
 div.notices.info p {
