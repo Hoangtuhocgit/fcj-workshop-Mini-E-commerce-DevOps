@@ -20,8 +20,8 @@ pre: " <b> 1.1. </b> "
 | 6 | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý nội quy, quy định tại đơn vị thực tập | 17/04/2026 | 17/04/2026 |  |
 | 2 | - Tìm hiểu AWS và các nhóm dịch vụ cơ bản | 20/04/2026 | 20/04/2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
 | 3 | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console và AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài đặt và cấu hình AWS CLI <br>&emsp; + Dùng AWS CLI để kiểm tra tài nguyên | 21/04/2026 | 21/04/2026 | <https://000001.awsstudygroup.com/><br><https://000011.awsstudygroup.com/> |
-| 4 | - **Tìm hiểu EC2 cơ bản:** <br>&emsp; + Instance types, AMI, EBS <br>&emsp; + Kết nối remote SSH vào EC2 <br>&emsp; + Elastic IP | 22/04/2026 | 23/04/2026 | <https://000004.awsstudygroup.com/> |
-| 5 | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume | 24/04/2026 | 25/04/2026 | <https://000004.awsstudygroup.com/> |
+| 4–5 | - **Tìm hiểu EC2 cơ bản:** <br>&emsp; + Instance types, AMI, EBS <br>&emsp; + Kết nối remote SSH vào EC2 <br>&emsp; + Elastic IP | 22/04/2026 | 23/04/2026 | <https://000004.awsstudygroup.com/> |
+| 6–7 | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume | 24/04/2026 | 25/04/2026 | <https://000004.awsstudygroup.com/> |
 
 ### Kết quả đạt được tuần 1:
 

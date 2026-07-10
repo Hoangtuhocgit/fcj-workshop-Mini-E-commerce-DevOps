@@ -21,7 +21,7 @@ pre: " <b> 1.1. </b> "
 | Mon | - Study AWS and its basic service groups | April 20, 2026 | April 20, 2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
 | Tue | - Create an AWS Free Tier account <br> - Learn AWS Console and AWS CLI <br> - **Practice:** <br>&emsp; + Create an AWS account <br>&emsp; + Install and configure AWS CLI <br>&emsp; + Use AWS CLI to inspect resources | April 21, 2026 | April 21, 2026 | <https://000001.awsstudygroup.com/><br><https://000011.awsstudygroup.com/> |
 | Wed–Thu | - **EC2 fundamentals:** <br>&emsp; + Instance types, AMI, EBS <br>&emsp; + Remote SSH to EC2 <br>&emsp; + Elastic IP | April 22, 2026 | April 23, 2026 | <https://000004.awsstudygroup.com/> |
-| Fri | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume | April 24, 2026 | April 25, 2026 | <https://000004.awsstudygroup.com/> |
+| Fri–Sat | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume | April 24, 2026 | April 25, 2026 | <https://000004.awsstudygroup.com/> |
 
 ### Week 1 achievements:
 
