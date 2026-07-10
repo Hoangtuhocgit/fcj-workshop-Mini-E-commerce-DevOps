@@ -18,10 +18,10 @@ pre: " <b> 1.3. </b> "
 | Day | Task | Start Date | Completion Date | Reference material |
 | --- | --- | --- | --- | --- |
 | 2 | Review Week 2 content on AWS Budgets, IAM, VPC, and Amazon S3. | May 4, 2026 | May 4, 2026 | <https://cloudjourney.awsstudygroup.com/1-explore/> |
-| 3 | **Learn and practice IAM Roles for EC2:** <br>&emsp; + Create an IAM Role, attach policies, and assign the role to an EC2 instance. <br>&emsp; + Verify EC2 access to S3 with the AWS CLI without configuring Access Keys directly on the instance. | May 5, 2026 | May 6, 2026 | <https://000048.awsstudygroup.com/> |
-| 4 | **Explore AWS Cloud9:** <br>&emsp; + Get comfortable with the cloud IDE, terminal, and basic AWS CLI commands. | May 7, 2026 | May 7, 2026 | <https://000049.awsstudygroup.com/> |
-| 5 | **Learn and practice Amazon RDS:** <br>&emsp; + Study DB instances, DB engines, endpoints, backups, and snapshots. <br>&emsp; + Create a Free Tier MySQL/PostgreSQL instance, configure Security Groups, and connect from EC2 or Cloud9. | May 8, 2026 | May 9, 2026 | <https://000005.awsstudygroup.com/> |
-| 6 | **Amazon CloudWatch fundamentals:** <br>&emsp; + Monitor EC2/RDS metrics and create a simple alarm. <br> **Cleanup:** Remove resources after hands-on work to limit unexpected charges. | May 10, 2026 | May 10, 2026 | <https://000008.awsstudygroup.com/> |
+| 3–4 | **Learn and practice IAM Roles for EC2:** <br>&emsp; + Create an IAM Role, attach policies, and assign the role to an EC2 instance. <br>&emsp; + Verify EC2 access to S3 with the AWS CLI without configuring Access Keys directly on the instance. | May 5, 2026 | May 6, 2026 | <https://000048.awsstudygroup.com/> |
+| 5 | **Explore AWS Cloud9:** <br>&emsp; + Get comfortable with the cloud IDE, terminal, and basic AWS CLI commands. | May 7, 2026 | May 7, 2026 | <https://000049.awsstudygroup.com/> |
+| 6 | **Learn and practice Amazon RDS:** <br>&emsp; + Study DB instances, DB engines, endpoints, backups, and snapshots. <br>&emsp; + Create a Free Tier MySQL/PostgreSQL instance, configure Security Groups, and connect from EC2 or Cloud9. | May 8, 2026 | May 8, 2026 | <https://000005.awsstudygroup.com/> |
+| 7 | **Amazon CloudWatch fundamentals:** <br>&emsp; + Monitor EC2/RDS metrics and create a simple alarm. <br> **Cleanup:** Remove resources after hands-on work to limit unexpected charges. | May 9, 2026 | May 9, 2026 | <https://000008.awsstudygroup.com/> |
 
 ### Week 3 achievements:
 
