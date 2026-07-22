@@ -242,7 +242,3 @@ Không khí cởi mở, khuyến khích đặt câu hỏi và trao đổi — ph
 **Bài học rút ra**
 
 Sự kiện giúp em nhận thức rằng hành trình Cloud/AI Engineer không chỉ là học dịch vụ AWS mà còn cần: kỹ năng context engineering, tư duy thiết kế hệ thống production-ready, và đặc biệt là **mindset nghiệp vụ** để giải quyết bài toán thực tế của doanh nghiệp.
-
-### Hình ảnh tham dự sự kiện
-
-![Ảnh nhóm tham dự FCAJ Community Day lần 2](/images/4-EventParticipated/4.2-Event2/group-photo.png)

@@ -9,9 +9,9 @@ chapter: false
 # Internship Report
 
 ### Student Information:
-&emsp; **Full Name:** Vo Anh Kiet
+&emsp; **Full Name:** Pham Xuan Hoang
 
-&emsp; **Email:** kietanhvo4@gmail.com
+&emsp; **Email:** phamxuanhoang215@gmail.com
 
 &emsp; **University:** University of Technology (HUTECH)
 
@@ -25,7 +25,6 @@ chapter: false
 
 &emsp; **Internship Duration:** From 04/05/2026 to 10/07/2026
 
-![Your profile picture](/images/avatar.png)
 
 ### Report Content
 

@@ -243,6 +243,4 @@ Open atmosphere encouraging questions and discussion — fitting FCAJ's learning
 
 The event helped me recognize that the Cloud/AI Engineer journey involves not just learning AWS services but also: context engineering skills, production-ready system design thinking, and especially **business mindset** to solve real enterprise problems.
 
-### Event Photos
 
-![Group photo at FCAJ Community Day 2](/images/4-EventParticipated/4.2-Event2/group-photo.png)
