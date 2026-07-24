@@ -24,8 +24,7 @@ chapter: false
 &emsp; **Internship Position:** FCAJ Cloud Intern
 
 &emsp; **Internship Duration:** From 04/05/2026 to 10/07/2026
-
-
+<img src="/images/anh-cua-toi.png" alt="Ảnh đại diện" width="300">
 ### Report Content
 
 1.  [Worklog](1-Worklog/)
