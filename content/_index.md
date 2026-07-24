@@ -1,36 +1,38 @@
 ---
-title: "Internship Report"
+title: "Báo cáo thực tập"
 date: 2026-07-10
 weight: 1
 chapter: false
 ---
 
-    
-# Internship Report
+# Báo cáo thực tập
 
-### Student Information:
-&emsp; **Full Name:** Pham Xuan Hoang
+### Thông tin sinh viên:
+
+&emsp; **Họ và tên:** Pham Xuan Hoang
 
 &emsp; **Email:** phamxuanhoang215@gmail.com
 
-&emsp; **University:** University of Technology (HUTECH)
+&emsp; **Trường:** Đại học Công Nghệ (HUTECH)
 
-&emsp; **Major:** Information Technology
+&emsp; **Ngành:** Công nghệ thông tin
 
-&emsp; **Class:** AWS052026
+&emsp; **Lớp:** AWS052026
 
-&emsp; **Internship Company:** Amazon Web Services Vietnam Co., Ltd.
+&emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Vietnam
 
-&emsp; **Internship Position:** FCAJ Cloud Intern
+&emsp; **Vị trí thực tập:** FCAJ Cloud Intern
 
-&emsp; **Internship Duration:** From 04/05/2026 to 10/07/2026
-<img src="/images/anh-cua-toi.png" alt="Ảnh đại diện" width="300">
-### Report Content
+&emsp; **Thời gian thực tập:** Từ ngày 04/05/2026 đến ngày 10/07/2026
 
-1.  [Worklog](1-Worklog/)
-2.  [Proposal](2-Proposal/)
-3.  [Translated Blogs](3-BlogsTranslated/)
-4.  [Events Participated](4-EventParticipated/)
-5.  [Workshop](5-Workshop/)
-6.  [Self-evaluation](6-Self-evaluation/)
-7.  [Sharing and Feedback](7-Feedback/)
+<img src="/fcj-workshop-Mini-E-commerce-DevOps/images/anh-cua-toi.png" alt="Ảnh đại diện" width="300">
+
+### Nội dung báo cáo
+
+1. [Worklog](1-Worklog/)
+2. [Proposal](2-Proposal/)
+3. [Các bài blogs đã dịch](3-BlogsTranslated/)
+4. [Các events đã tham gia](4-EventParticipated/)
+5. [Workshop](5-Workshop/)
+6. [Tự đánh giá](6-Self-evaluation/)
+7. [Chia sẻ, đóng góp ý kiến](7-Feedback/)
